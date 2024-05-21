@@ -8,6 +8,18 @@ namespace graphics {
     //%
     export class Canvas { }
 
+    //%
+    export class Window { }
+
+    //%
+    export class Sprite { }
+
+    //%
+    export class Change { }
+
+    //%
+    export class Pixel { }
+
     /**
      * Creates a canvas for use in a variable
      */
