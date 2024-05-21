@@ -6,7 +6,17 @@
 namespace graphics {
 
     //%
-    export class Canvas { }
+    export class Canvas {
+        /**
+         * Create a window to view a section of canvas
+         */
+        //% block="add window to $this"
+        //% blockSetVariable=window
+        //% weight=10
+        public createWindow(): Window {
+            return new Window();
+        }
+    }
 
     //%
     export class Window { }
