@@ -34,8 +34,10 @@ namespace graphics {
      * Creates a canvas for use in a variable
      */
     //% block="create canvas $width by $height"
+    //% width.min=1 width.max=1024 width.defl=40
+    //% height.min=1 height.max=768 height.defl=30
     //% blockSetVariable=canvas
     export function createCanvas(width: number, height: number): Canvas {
-        return undefined;
+        return new Canvas();
     }
 }
