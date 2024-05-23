@@ -16,13 +16,33 @@ namespace graphics {
         public createWindow(): Window {
             return new Window();
         }
+
+        /**
+         * Create a sprite to be displayed on the canvas.
+         * It will initially be blank.  To be displayed it
+         * must have something added to it.
+         */
+        //% block="add sprite to $this"
+        //% blockSetVariable=sprite
+        //% weight=8
+        public createSprite(): Sprite {
+            return new Sprite();
+        }
     }
 
     //%
     export class Window { }
 
     //%
-    export class Sprite { }
+    export class Sprite {
+        /**
+         * Replace the current sprite graphics with a basic image.
+         */
+        //% block="replace $this image with $image"
+        //% weight=6
+        public setImage(image: Image): void {
+        }
+    }
 
     //%
     export class Change { }
