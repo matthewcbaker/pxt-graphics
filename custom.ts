@@ -46,7 +46,8 @@ namespace graphics {
         //% this.shadow=variables_get
         //% group="Window"
         //% weight=6
-        public getChanges(): void {
+        public getChanges(): Change[] {
+            return []
         }
     }
 
