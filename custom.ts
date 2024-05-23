@@ -55,7 +55,7 @@ namespace graphics {
         /**
          * Replace the current sprite graphics with a basic image.
          */
-        //% block="replace $this image with $image"
+        //% block="set $this to image $image"
         //% this.defl=sprite
         //% this.shadow=variables_get
         //% group="Drawing"
