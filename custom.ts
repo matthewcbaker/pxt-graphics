@@ -8,16 +8,6 @@ namespace graphics {
     //%
     export class Canvas {
         /**
-         * Create a window to view a section of canvas
-         */
-        //% block="add window to $this"
-        //% blockSetVariable=window
-        //% weight=10
-        public createWindow(): Window {
-            return new Window();
-        }
-
-        /**
          * Create a sprite to be displayed on the canvas.
          * It will initially be blank.  To be displayed it
          * must have something added to it.
@@ -31,7 +21,15 @@ namespace graphics {
     }
 
     //%
-    export class Window { }
+    export class Window {
+        /**
+         * Gets the differences between the last change request and this one.
+         */
+        //% block="get changes to $this"
+        //% weight=6
+        public getChanges(): void {
+        }
+    }
 
     //%
     export class Sprite {
@@ -59,5 +57,15 @@ namespace graphics {
     //% blockSetVariable=canvas
     export function createCanvas(width: number, height: number): Canvas {
         return new Canvas();
+    }
+
+    /**
+     * Creates a window to view a section of canvas.
+     */
+    //% block="create window to view $canvas"
+    //% blockSetVariable=window
+    //% weight=10
+    export function createWindow(canvas: Canvas): Window {
+        return new Window();
     }
 }
