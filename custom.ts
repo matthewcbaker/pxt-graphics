@@ -26,6 +26,8 @@ namespace graphics {
          * must have something added to it.
          */
         //% block="add sprite to $this"
+        //% this.defl=canvas
+        //% this.shadow=variables_get
         //% blockSetVariable=sprite
         //% group="Drawing"
         //% weight=8
@@ -40,6 +42,8 @@ namespace graphics {
          * Gets the differences between the last change request and this one.
          */
         //% block="get changes to $this"
+        //% this.defl=window
+        //% this.shadow=variables_get
         //% group="Window"
         //% weight=6
         public getChanges(): void {
@@ -52,6 +56,8 @@ namespace graphics {
          * Replace the current sprite graphics with a basic image.
          */
         //% block="replace $this image with $image"
+        //% this.defl=sprite
+        //% this.shadow=variables_get
         //% group="Drawing"
         //% weight=6
         public setImage(image: Image): void {
