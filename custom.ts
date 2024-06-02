@@ -37,21 +37,6 @@ namespace graphics {
     }
 
     //%
-    export class Window {
-        /**
-         * Gets the differences between the last change request and this one.
-         */
-        //% block="get changes to $this"
-        //% this.defl=window
-        //% this.shadow=variables_get
-        //% group="Window"
-        //% weight=6
-        public getChanges(): Change[] {
-            return []
-        }
-    }
-
-    //%
     export class Sprite {
         /**
          * Replace the current sprite graphics with a basic image.
@@ -65,12 +50,6 @@ namespace graphics {
         }
     }
 
-    //%
-    export class Change { }
-
-    //%
-    export class Pixel { }
-
     /**
      * Creates a window to view a section of canvas.
      */
@@ -81,4 +60,38 @@ namespace graphics {
     export function createWindow(canvas: Canvas): Window {
         return new Window();
     }
+
+    //%
+    export class Window {
+        /**
+         * Gets the differences between the last change request and this one.
+         */
+        //% block="get changes to $this"
+        //% this.defl=window
+        //% this.shadow=variables_get
+        //% group="Window"
+        //% weight=6
+        public getChanges(): Change[] {
+            return []
+        }
+    }
+    
+    //%
+    export class Change {
+        /**
+         * Gets the individual pixels that have changed.
+         */
+        //% block="$this get pixels"
+        //% this.defl=change
+        //% this.shadow=variables_get
+        //% group="Window"
+        //% weight=5
+        public getPixels(): Pixel[] {
+            return []
+        }
+     }
+
+    //%
+    export class Pixel { }
+
 }
