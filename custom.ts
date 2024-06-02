@@ -50,8 +50,8 @@ class Canvas {
 
 //% blockNamespace=graphics
 class Sprite {
-    _width: number;
-    _height: number;
+    _width: number = 0;
+    _height: number = 0;
 
     constructor() {
     }
