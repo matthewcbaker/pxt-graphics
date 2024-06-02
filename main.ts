@@ -2,14 +2,15 @@ function testSettingSpriteImage () {
     canvas = graphics.createCanvas(40, 30)
     sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
-    validateNumber("no changes", 1, 0)
+    validateNumber("sprite image width", sprite.width, 5)
+    validateNumber("sprite image height", sprite.height, 5)
 }
 function runTests () {
-    failures = 0
+    failures = []
     testInitialChangesWhenBlank()
     testInitialChangesWhenBlankSprite()
-    testSettingSpriteImage()
-    if (failures == 0) {
+    testInitialiseSprite()
+    if (failures.length == 0) {
         basic.showIcon(IconNames.Yes)
     } else {
         basic.showIcon(IconNames.No)
@@ -17,7 +18,7 @@ function runTests () {
 }
 function validateNumber (name: string, test: number, expected: number) {
     if (test != expected) {
-        fail(name, convertToText(test), convertToText(expected))
+        fail(name, convertToText(expected), convertToText(test))
     }
 }
 function testInitialChangesWhenBlank () {
@@ -25,8 +26,17 @@ function testInitialChangesWhenBlank () {
     window = graphics.createWindow(canvas)
     validateNumber("no changes", window.getChanges().length, 0)
 }
-function fail (name: string, expected: string, actual: string) {
-    failures += 1
+function runFailingTests () {
+    testSettingSpriteImage()
+}
+function testInitialiseSprite () {
+    canvas = graphics.createCanvas(40, 30)
+    sprite = canvas.createSprite()
+    validateNumber("sprite width init", sprite.width, 0)
+    validateNumber("sprite height init", sprite.height, 0)
+}
+function fail (name: string, actual: string, expected: string) {
+    failures.push("" + name + ": " + actual + "!=" + expected)
 }
 function testInitialChangesWhenBlankSprite () {
     canvas = graphics.createCanvas(40, 30)
@@ -35,7 +45,7 @@ function testInitialChangesWhenBlankSprite () {
     validateNumber("no changes", window.getChanges().length, 0)
 }
 let window: Window = null
-let failures = 0
+let failures: string[] = []
 let sprite: Sprite = null
 let canvas: Canvas = null
 runTests()
