@@ -38,6 +38,18 @@ namespace graphics {
 
     //%
     export class Sprite {
+        _width: number = 0;
+        _height: number = 0;
+
+        constructor() {
+        }
+
+        //% blockCombine
+        get width() { return this._width }
+
+        //% blockCombine
+        get height() { return this._height }
+
         /**
          * Replace the current sprite graphics with a basic image.
          */

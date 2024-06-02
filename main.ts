@@ -1,6 +1,14 @@
+function testSettingSpriteImage () {
+    canvas = graphics.createCanvas(40, 30)
+    sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    validateNumber("no changes", 1, 0)
+}
 function runTests () {
     failures = 0
     testInitialChangesWhenBlank()
+    testInitialChangesWhenBlankSprite()
+    testSettingSpriteImage()
     if (failures == 0) {
         basic.showIcon(IconNames.Yes)
     } else {
@@ -20,7 +28,14 @@ function testInitialChangesWhenBlank () {
 function fail (name: string, expected: string, actual: string) {
     failures += 1
 }
+function testInitialChangesWhenBlankSprite () {
+    canvas = graphics.createCanvas(40, 30)
+    window = graphics.createWindow(canvas)
+    sprite = canvas.createSprite()
+    validateNumber("no changes", window.getChanges().length, 0)
+}
 let window: graphics.Window = null
-let canvas: graphics.Canvas = null
 let failures = 0
+let sprite: graphics.Sprite = null
+let canvas: graphics.Canvas = null
 runTests()
