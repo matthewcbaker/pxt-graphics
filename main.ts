@@ -21,6 +21,11 @@ function validateNumber (name: string, test: number, expected: number) {
         fail(name, convertToText(expected), convertToText(test))
     }
 }
+input.onButtonPressed(Button.A, function () {
+    for (let value of failures) {
+        basic.showString("" + (value))
+    }
+})
 function testInitialChangesWhenBlank () {
     canvas = graphics.createCanvas(40, 30)
     window = graphics.createWindow(canvas)
