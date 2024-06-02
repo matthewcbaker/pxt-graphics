@@ -24,7 +24,7 @@ namespace graphics {
     //% block="create window to view $canvas"
     //% group="Window"
     //% blockSetVariable=window
-    //% weight=10
+    //% weight=52
     export function createWindow(canvas: Canvas): Window {
         return new Window();
     }
@@ -42,7 +42,7 @@ class Canvas {
     //% this.shadow=variables_get
     //% blockSetVariable=sprite
     //% group="Drawing"
-    //% weight=8
+    //% weight=51
     public createSprite(): Sprite {
         return new Sprite();
     }
@@ -57,9 +57,11 @@ class Sprite {
     }
 
     //% blockCombine
+    //% group="Drawing"
     get width() { return this._width }
 
     //% blockCombine
+    //% group="Drawing"
     get height() { return this._height }
 
     /**
@@ -69,7 +71,6 @@ class Sprite {
     //% this.defl=sprite
     //% this.shadow=variables_get
     //% group="Drawing"
-    //% weight=6
     public setImage(image: Image): void {
     }
 }
@@ -83,7 +84,7 @@ class Window {
     //% this.defl=window
     //% this.shadow=variables_get
     //% group="Window"
-    //% weight=6
+    //% weight=51
     public getChanges(): Change[] {
         return []
     }
