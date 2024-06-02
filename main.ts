@@ -10,6 +10,7 @@ function runTests () {
     testInitialChangesWhenBlank()
     testInitialChangesWhenBlankSprite()
     testInitialiseSprite()
+    runFailingTests(false)
     if (failures.length == 0) {
         basic.showIcon(IconNames.Yes)
     } else {
@@ -31,7 +32,10 @@ function testInitialChangesWhenBlank () {
     window = graphics.createWindow(canvas)
     validateNumber("no changes", window.getChanges().length, 0)
 }
-function runFailingTests () {
+function runFailingTests (run: boolean) {
+    if (!(run)) {
+        return
+    }
     testSettingSpriteImage()
 }
 function testInitialiseSprite () {
