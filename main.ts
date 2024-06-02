@@ -34,8 +34,8 @@ function testInitialChangesWhenBlankSprite () {
     sprite = canvas.createSprite()
     validateNumber("no changes", window.getChanges().length, 0)
 }
-let window: graphics.Window = null
+let window: Window = null
 let failures = 0
-let sprite: graphics.Sprite = null
-let canvas: graphics.Canvas = null
+let sprite: Sprite = null
+let canvas: Canvas = null
 runTests()
