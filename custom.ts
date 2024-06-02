@@ -72,6 +72,8 @@ class Sprite {
     //% this.shadow=variables_get
     //% group="Drawing"
     public setImage(image: Image): void {
+        this._width = image.width()
+        this._height = image.height()
     }
 }
 
