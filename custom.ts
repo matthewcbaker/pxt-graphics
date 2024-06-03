@@ -16,7 +16,7 @@ namespace graphics {
     //% blockSetVariable=canvas
     //% weight=52
     export function createCanvas(width: number, height: number): Canvas {
-        return new Canvas();
+        return new Canvas(width, height);
     }
 
     /**
@@ -37,7 +37,9 @@ class Canvas {
     _height: number = 0;
     _sprites: Sprite[] = [];
 
-    constructor() {
+    constructor(width: number, height: number) {
+        this._width = Math.constrain(width, 1, 1024)
+        this._height = Math.constrain(height, 1, 768)
     }
 
     /**
@@ -62,7 +64,7 @@ class Canvas {
     //% this.shadow=variables_get
     //% group="Canvas"
     public pixel(x: number, y: number) {
-        if (x < 0 || x > this._width || y < 0 || y > this._height)
+        if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return new Pixel(0, 0, 0);
         for (let i = 0; i < this._sprites.length; i++) {
             return this._sprites[i].pixel(x, y)
@@ -93,7 +95,7 @@ class Sprite {
     //% this.shadow=variables_get
     //% group="Drawing"
     public pixel(x: number, y: number) {
-        if (x < 0 || x > this._width || y < 0 || y > this._height)
+        if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return new Pixel(0, 0, 0)
         if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
             return new Pixel(0, 0, 0)
