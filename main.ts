@@ -2,7 +2,6 @@ function runTestsInProgress (run: boolean) {
     if (!(run)) {
         return
     }
-    testCanvasUpdatesWithSpriteChanges()
 }
 function testSettingSpriteImage () {
     canvas = graphics.createCanvas(40, 30)
@@ -28,11 +27,12 @@ function testSettingSpriteImage () {
 }
 function runTests () {
     failures = []
+    runTestsInProgress(true)
     testInitialChangesWhenBlank()
     testInitialChangesWhenBlankSprite()
     testInitialiseSprite()
     testSettingSpriteImage()
-    runTestsInProgress(true)
+    testCanvasUpdatesWithSpriteChanges()
     if (failures.length == 0) {
         basic.showIcon(IconNames.Yes)
     } else {
