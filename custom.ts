@@ -65,11 +65,11 @@ class Canvas {
     //% group="Canvas"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(0, 0, 0);
+            return new Pixel(x, y, 0, 0, 0);
         for (let i = 0; i < this._sprites.length; i++) {
             return this._sprites[i].pixel(x, y)
         }
-        return new Pixel(0, 0, 0)
+        return new Pixel(x, y, 0, 0, 0)
     }
 }
 
@@ -96,9 +96,9 @@ class Sprite {
     //% group="Drawing"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(0, 0, 0)
+            return new Pixel(x, y, 0, 0, 0)
         if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
-            return new Pixel(0, 0, 0)
+            return new Pixel(x, y, 0, 0, 0)
         return this._pixels[x][y]
     }
 
@@ -128,7 +128,7 @@ class Sprite {
     setPixel(x: number, y: number, r: number, g: number, b: number): void {
         if (this._pixels[x] == undefined)
             this._pixels[x] = {}
-        this._pixels[x][y] = new Pixel(r, g, b)
+        this._pixels[x][y] = new Pixel(x, y, r, g, b)
     }
 }
 
@@ -164,15 +164,27 @@ class Change {
 
 //% blockNamespace=graphics
 class Pixel {
+    _x: number
+    _y: number
     _r: number
     _g: number
     _b: number
 
-    constructor(r: number, g: number, b: number) {
+    constructor(x: number, y: number, r: number, g: number, b: number) {
+        this._x = x
+        this._y = y
         this._r = this.constrain(r)
         this._g = this.constrain(g)
         this._b = this.constrain(b)
     }
+
+    //% blockCombine
+    //% group="Shapes"
+    get x() { return this._x }
+
+    //% blockCombine
+    //% group="Shapes"
+    get y() { return this._y }
 
     //% blockCombine
     //% group="Shapes"
