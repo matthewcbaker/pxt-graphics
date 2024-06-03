@@ -27,7 +27,7 @@ namespace graphics {
     //% blockSetVariable=window
     //% weight=52
     export function createWindow(canvas: Canvas): Window {
-        return new Window();
+        return new Window(canvas);
     }
 }
 
@@ -134,6 +134,38 @@ class Sprite {
 
 //% blockNamespace=graphics
 class Window {
+    _canvas: Canvas
+    _width: number = 0;
+    _height: number = 0;
+    _pixels: { [key: number]: { [key: number]: Pixel } } = {};
+
+    constructor(canvas: Canvas) {
+        this._canvas = canvas
+        this._width = canvas._width
+        this._height = canvas._height
+    }
+
+    /**
+     * Gets the differences between the last change request and this one.
+     */
+    //% block="$this change"
+    //% this.defl=window
+    //% this.shadow=variables_get
+    //% blockSetVariable=change
+    //% group="Window"
+    //% weight=51
+    public change(): Change {
+        let change = new Change
+        for (let x = 0; x < this._width; x++) {
+            for (let y = 0; y < this._height; y++) {
+                if (this._pixels[x] == undefined || this._pixels[x][y] == undefined) {
+                    // copy pixel from canvas
+                }
+            }
+        }
+        return change
+    }
+
     /**
      * Gets the differences between the last change request and this one.
      */
@@ -142,6 +174,7 @@ class Window {
     //% this.shadow=variables_get
     //% group="Window"
     //% weight=51
+    //% deprecated=true
     public getChanges(): Change[] {
         return []
     }
