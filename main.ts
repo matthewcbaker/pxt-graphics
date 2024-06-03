@@ -63,6 +63,15 @@ function demo () {
             led.plotBrightness(x, y, demo_canvas.pixel(x, y).brightness)
         }
     }
+    basic.pause(2000)
+    basic.clearScreen()
+    basic.pause(2000)
+    demo_window = graphics.createWindow(demo_canvas)
+    for (let change of demo_window.getChanges()) {
+        for (let pixel of change.getPixels()) {
+            led.plotBrightness(0, 0, pixel.brightness)
+        }
+    }
 }
 function testCanvasUpdatesWithSpriteChanges () {
     canvas = graphics.createCanvas(40, 30)
@@ -88,6 +97,7 @@ function testInitialChangesWhenBlankSprite () {
     sprite = canvas.createSprite()
     validateNumber("no changes", window.getChanges().length, 0)
 }
+let demo_window: Window = null
 let demo_sprite: Sprite = null
 let demo_canvas: Canvas = null
 let window: Window = null
