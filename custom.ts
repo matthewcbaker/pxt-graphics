@@ -52,6 +52,7 @@ class Canvas {
 class Sprite {
     _width: number = 0;
     _height: number = 0;
+    _pixels: {[key: number]: {[key: number]: Pixel}} = {};
 
     constructor() {
     }
@@ -74,6 +75,23 @@ class Sprite {
     public setImage(image: Image): void {
         this._width = image.width()
         this._height = image.height()
+        this._pixels = {}
+        for (let x = 0; x < image.width(); x++) {
+            for (let y = 0; y < image.height(); y++) {
+                if (image.pixel(x, y)) {
+                    let b = image.pixelBrightness(x, y)
+                    this.setPixel(x, y, b, b, b)
+                } else {
+                    this.setPixel(x, y, 0, 0, 0)
+                }
+            }
+        }
+    }
+
+    setPixel(x: number, y: number, r: number, g: number, b: number): void {
+        if (this._pixels[x] == undefined)
+            this._pixels[x] = {}
+        this._pixels[x][y] = new Pixel(r, g, b)
     }
 }
 
@@ -108,6 +126,20 @@ class Change {
 }
 
 //% blockNamespace=graphics
-class Pixel { }
+class Pixel {
+    _r: number
+    _g: number
+    _b: number
+
+    constructor(r: number, g: number, b: number) {
+        this._r = this.constrain(r)
+        this._r = this.constrain(g)
+        this._r = this.constrain(b)
+    }
+
+    constrain(value: number) {
+        return Math.constrain(value, 0, 255)
+    }
+}
 
 
