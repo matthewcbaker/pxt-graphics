@@ -14,6 +14,7 @@ namespace graphics {
     //% width.min=1 width.max=1024 width.defl=40
     //% height.min=1 height.max=768 height.defl=30
     //% blockSetVariable=canvas
+    //% weight=52
     export function createCanvas(width: number, height: number): Canvas {
         return new Canvas();
     }
@@ -32,6 +33,13 @@ namespace graphics {
 
 //% blockNamespace=graphics
 class Canvas {
+    _width: number = 0;
+    _height: number = 0;
+    _sprites: Sprite[] = [];
+
+    constructor() {
+    }
+
     /**
      * Create a sprite to be displayed on the canvas.
      * It will initially be blank.  To be displayed it
@@ -44,7 +52,22 @@ class Canvas {
     //% group="Drawing"
     //% weight=51
     public createSprite(): Sprite {
-        return new Sprite();
+        let sprite = new Sprite();
+        this._sprites.push(sprite);
+        return sprite;
+    }
+
+    //% block="$this pixel x$x y$y"
+    //% this.defl=canvas
+    //% this.shadow=variables_get
+    //% group="Canvas"
+    public pixel(x: number, y: number) {
+        if (x < 0 || x > this._width || y < 0 || y > this._height)
+            return new Pixel(0, 0, 0);
+        for (let i = 0; i < this._sprites.length; i++) {
+            return this._sprites[i].pixel(x, y)
+        }
+        return new Pixel(0, 0, 0)
     }
 }
 
@@ -70,7 +93,9 @@ class Sprite {
     //% this.shadow=variables_get
     //% group="Drawing"
     public pixel(x: number, y: number) {
-        if (x < 0 || x > this._width || this._pixels[x] == undefined || this._pixels[x][y] == undefined)
+        if (x < 0 || x > this._width || y < 0 || y > this._height)
+            return new Pixel(0, 0, 0)
+        if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
             return new Pixel(0, 0, 0)
         return this._pixels[x][y]
     }

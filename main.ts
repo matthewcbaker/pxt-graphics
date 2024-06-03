@@ -1,3 +1,9 @@
+function runTestsInProgress (run: boolean) {
+    if (!(run)) {
+        return
+    }
+    testCanvasUpdatesWithSpriteChanges()
+}
 function testSettingSpriteImage () {
     canvas = graphics.createCanvas(40, 30)
     sprite = canvas.createSprite()
@@ -26,7 +32,7 @@ function runTests () {
     testInitialChangesWhenBlankSprite()
     testInitialiseSprite()
     testSettingSpriteImage()
-    runFailingTests(true)
+    runTestsInProgress(true)
     if (failures.length == 0) {
         basic.showIcon(IconNames.Yes)
     } else {
@@ -48,10 +54,14 @@ function testInitialChangesWhenBlank () {
     window = graphics.createWindow(canvas)
     validateNumber("no changes", window.getChanges().length, 0)
 }
-function runFailingTests (run: boolean) {
-    if (!(run)) {
-        return
-    }
+function testCanvasUpdatesWithSpriteChanges () {
+    canvas = graphics.createCanvas(40, 30)
+    sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    validateNumber("sprite valid 0,0", sprite.pixel(0, 0).brightness, 0)
+    validateNumber("sprite valid 0,1", sprite.pixel(0, 1).brightness, 255)
+    validateNumber("canvas valid 0,0", canvas.pixel(0, 0).brightness, 0)
+    validateNumber("canvas valid 0,1", canvas.pixel(0, 1).brightness, 255)
 }
 function testInitialiseSprite () {
     canvas = graphics.createCanvas(40, 30)
