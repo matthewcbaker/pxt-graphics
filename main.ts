@@ -69,7 +69,7 @@ function demo () {
     demo_window = graphics.createWindow(demo_canvas)
     for (let change of demo_window.getChanges()) {
         for (let pixel of change.getPixels()) {
-            led.plotBrightness(0, 0, pixel.brightness)
+            led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
         }
     }
 }
