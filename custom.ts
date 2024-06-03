@@ -3,7 +3,7 @@
  * Graphics assistance
  */
 //% weight=10 color="#de26a7" icon="\uf302"
-//% groups=['Canvas', 'Drawing', 'Window']
+//% groups=['Canvas', 'Drawing', 'Window', 'Shapes']
 namespace graphics {
 
     /**
@@ -136,6 +136,26 @@ class Pixel {
         this._r = this.constrain(g)
         this._r = this.constrain(b)
     }
+
+    //% blockCombine
+    //% group="Shapes"
+    get red() { return this._r }
+
+    //% blockCombine
+    //% group="Shapes"
+    get green() { return this._g }
+
+    //% blockCombine
+    //% group="Shapes"
+    get blue() { return this._b }
+
+    //% blockCombine
+    //% group="Shapes"
+    get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
+
+    //% blockCombine
+    //% group="Shapes"
+    get on() { return this.red > 0 || this.green > 0 || this.blue > 0 }
 
     constrain(value: number) {
         return Math.constrain(value, 0, 255)
