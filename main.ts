@@ -4,6 +4,21 @@ function testSettingSpriteImage () {
     sprite.setImage(images.iconImage(IconNames.Heart))
     validateNumber("sprite image width", sprite.width, 5)
     validateNumber("sprite image height", sprite.height, 5)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).red, 0)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).green, 0)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).blue, 0)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).red, 255)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).green, 255)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).blue, 255)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).brightness, 0)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).brightness, 255)
+    validateNumber("sprite pixel 0,2", sprite.pixel(0, 2).brightness, 255)
+    validateNumber("sprite pixel 0,3", sprite.pixel(0, 3).brightness, 0)
+    validateNumber("sprite pixel 0,4", sprite.pixel(0, 3).brightness, 0)
+    validateNumber("sprite pixel 1,0", sprite.pixel(1, 0).brightness, 255)
+    validateNumber("sprite pixel 2,0", sprite.pixel(2, 0).brightness, 0)
+    validateNumber("sprite pixel 3,0", sprite.pixel(3, 0).brightness, 255)
+    validateNumber("sprite pixel 4,0", sprite.pixel(4, 0).brightness, 0)
 }
 function runTests () {
     failures = []

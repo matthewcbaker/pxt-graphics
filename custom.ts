@@ -65,6 +65,16 @@ class Sprite {
     //% group="Drawing"
     get height() { return this._height }
 
+    //% block="$this pixel x$x y$y"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% group="Drawing"
+    public pixel(x: number, y: number) {
+        if (x < 0 || x > this._width || this._pixels[x] == undefined || this._pixels[x][y] == undefined)
+            return new Pixel(0, 0, 0)
+        return this._pixels[x][y]
+    }
+
     /**
      * Replace the current sprite graphics with a basic image.
      */
@@ -133,8 +143,8 @@ class Pixel {
 
     constructor(r: number, g: number, b: number) {
         this._r = this.constrain(r)
-        this._r = this.constrain(g)
-        this._r = this.constrain(b)
+        this._g = this.constrain(g)
+        this._b = this.constrain(b)
     }
 
     //% blockCombine
