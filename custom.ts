@@ -148,13 +148,13 @@ class Window {
     /**
      * Gets the differences between the last change request and this one.
      */
-    //% block="$this change"
+    //% block="$this changes"
     //% this.defl=window
     //% this.shadow=variables_get
     //% blockSetVariable=change
     //% group="Window"
     //% weight=51
-    public change(): Change {
+    public changes(): Change {
         let change = new Change
         for (let x = 0; x < this._width; x++) {
             for (let y = 0; y < this._height; y++) {
@@ -182,6 +182,15 @@ class Window {
 
 //% blockNamespace=graphics
 class Change {
+    _pixels: Pixel[] = [];
+
+    constructor() {
+    }
+    
+    //% blockCombine
+    //% group="Window"
+    get pixels() { return this._pixels }
+
     /**
      * Gets the individual pixels that have changed.
      */
@@ -190,6 +199,7 @@ class Change {
     //% this.shadow=variables_get
     //% group="Window"
     //% weight=5
+    //% deprecated=true
     public getPixels(): Pixel[] {
         return []
     }
