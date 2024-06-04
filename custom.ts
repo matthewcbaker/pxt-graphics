@@ -29,6 +29,22 @@ namespace graphics {
     export function createWindow(canvas: Canvas): Window {
         return new Window(canvas);
     }
+
+    //% block="red$r green$g blue$b"
+    //% group="Colours"
+    //% r.min=0 r.max=255 r.defl=255
+    //% g.min=0 g.max=255 g.defl=255
+    //% b.min=0 b.max=255 b.defl=255
+    export function createColourRGB(r: number, g: number, b: number) {
+        return new Colour(r, g, b)
+    }
+
+    //% block="$colour"
+    //% group="Colours"
+    //% colour.shadow="colorNumberPicker"
+    export function createColourHex(colour: number) {
+        return new Colour(5, 5, 5)
+    }
 }
 
 //% blockNamespace=graphics
@@ -269,4 +285,35 @@ class Pixel {
     }
 }
 
+//% blockNamespace=graphics
+class Colour {
+    _r: number
+    _g: number
+    _b: number
 
+    constructor(r: number, g: number, b: number) {
+        this._r = this.constrain(r)
+        this._g = this.constrain(g)
+        this._b = this.constrain(b)
+    }
+
+    //% blockCombine
+    //% group="Colours"
+    get red() { return this._r }
+
+    //% blockCombine
+    //% group="Colours"
+    get green() { return this._g }
+
+    //% blockCombine
+    //% group="Colours"
+    get blue() { return this._b }
+
+    //% blockCombine
+    //% group="Colours"
+    get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
+
+    constrain(value: number) {
+        return Math.constrain(value, 0, 255)
+    }
+}

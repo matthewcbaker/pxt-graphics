@@ -84,13 +84,13 @@ function demo () {
     basic.showNumber(demo_change.pixels.length)
     basic.pause(demo_pause)
     basic.clearScreen()
-    for (let x = 0; x <= 4; x++) {
-        for (let y = 0; y <= 4; y++) {
-            led.plotBrightness(x, y, 80)
+    for (let x2 = 0; x2 <= 4; x2++) {
+        for (let y2 = 0; y2 <= 4; y2++) {
+            led.plotBrightness(x2, y2, 80)
         }
     }
-    for (let pixel of demo_change.pixels) {
-        led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
+    for (let pixel2 of demo_change.pixels) {
+        led.plotBrightness(pixel2.x, pixel2.y, pixel2.brightness)
     }
 }
 function testCanvasUpdatesWithSpriteChanges () {
