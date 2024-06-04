@@ -75,7 +75,23 @@ function demo () {
     basic.pause(demo_pause)
     basic.clearScreen()
     basic.pause(demo_pause)
+    basic.showNumber(demo_window.changes().pixels.length)
+    basic.pause(demo_pause)
+    basic.clearScreen()
+    basic.pause(demo_pause)
+    demo_sprite.setImage(images.iconImage(IconNames.Ghost))
+    demo_change = demo_window.changes()
     basic.showNumber(demo_change.pixels.length)
+    basic.pause(demo_pause)
+    basic.clearScreen()
+    for (let x = 0; x <= 4; x++) {
+        for (let y = 0; y <= 4; y++) {
+            led.plotBrightness(x, y, 80)
+        }
+    }
+    for (let pixel of demo_change.pixels) {
+        led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
+    }
 }
 function testCanvasUpdatesWithSpriteChanges () {
     canvas = graphics.createCanvas(40, 30)

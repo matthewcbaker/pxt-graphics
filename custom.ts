@@ -155,13 +155,23 @@ class Window {
     //% group="Window"
     //% weight=51
     public changes(): Change {
-        let change = new Change
+        let change = new Change()
+        let pixel = null
         for (let x = 0; x < this._width; x++) {
+            if (this._pixels[x] == undefined)
+                this._pixels[x] = {}
             for (let y = 0; y < this._height; y++) {
-                if (this._pixels[x] == undefined || this._pixels[x][y] == undefined) {
-                    // copy pixel from canvas
-                    change.addPixel(this._canvas.pixel(x, y))
+                pixel = this._canvas.pixel(x, y)
+                if (this._pixels[x][y] == undefined) {
+                    change.addPixel(pixel)
+                } else if (
+                    this._pixels[x][y].red != pixel.red ||
+                    this._pixels[x][y].red != pixel.green ||
+                    this._pixels[x][y].red != pixel.blue
+                    ) {
+                    change.addPixel(pixel)
                 }
+                this._pixels[x][y] = pixel
             }
         }
         return change
