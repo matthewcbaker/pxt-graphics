@@ -160,6 +160,7 @@ class Window {
             for (let y = 0; y < this._height; y++) {
                 if (this._pixels[x] == undefined || this._pixels[x][y] == undefined) {
                     // copy pixel from canvas
+                    change.addPixel(this._canvas.pixel(x, y))
                 }
             }
         }
@@ -190,6 +191,10 @@ class Change {
     //% blockCombine
     //% group="Window"
     get pixels() { return this._pixels }
+
+    addPixel(pixel: Pixel): void {
+        this._pixels.push(pixel)
+    }
 
     /**
      * Gets the individual pixels that have changed.

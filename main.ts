@@ -55,6 +55,7 @@ function testInitialChangesWhenBlank () {
     validateNumber("no changes", window.getChanges().length, 0)
 }
 function demo () {
+    demo_pause = 1000
     demo_canvas = graphics.createCanvas(5, 5)
     demo_sprite = demo_canvas.createSprite()
     demo_sprite.setImage(images.iconImage(IconNames.Heart))
@@ -63,15 +64,18 @@ function demo () {
             led.plotBrightness(x, y, demo_canvas.pixel(x, y).brightness)
         }
     }
-    basic.pause(2000)
+    basic.pause(demo_pause)
     basic.clearScreen()
-    basic.pause(2000)
+    basic.pause(demo_pause)
     demo_window = graphics.createWindow(demo_canvas)
-    for (let change of demo_window.getChanges()) {
-        for (let pixel of change.getPixels()) {
-            led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
-        }
+    demo_change = demo_window.changes()
+    for (let pixel of demo_change.pixels) {
+        led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
     }
+    basic.pause(demo_pause)
+    basic.clearScreen()
+    basic.pause(demo_pause)
+    basic.showNumber(demo_change.pixels.length)
 }
 function testCanvasUpdatesWithSpriteChanges () {
     canvas = graphics.createCanvas(40, 30)
@@ -97,9 +101,11 @@ function testInitialChangesWhenBlankSprite () {
     sprite = canvas.createSprite()
     validateNumber("no changes", window.getChanges().length, 0)
 }
+let demo_change: Change = null
 let demo_window: Window = null
 let demo_sprite: Sprite = null
 let demo_canvas: Canvas = null
+let demo_pause = 0
 let window: Window = null
 let failures: string[] = []
 let sprite: Sprite = null
