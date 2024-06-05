@@ -181,9 +181,9 @@ class Window {
                 if (this._pixels[x][y] == undefined) {
                     change.addPixel(pixel)
                 } else if (
-                    this._pixels[x][y].red != pixel.red ||
-                    this._pixels[x][y].red != pixel.green ||
-                    this._pixels[x][y].red != pixel.blue
+                    this._pixels[x][y].colour.red != pixel.colour.red ||
+                    this._pixels[x][y].colour.green != pixel.colour.green ||
+                    this._pixels[x][y].colour.blue != pixel.colour.blue
                     ) {
                     change.addPixel(pixel)
                 }
@@ -240,16 +240,12 @@ class Change {
 class Pixel {
     _x: number
     _y: number
-    _r: number
-    _g: number
-    _b: number
+    _colour: Colour
 
     constructor(x: number, y: number, r: number, g: number, b: number) {
         this._x = x
         this._y = y
-        this._r = this.constrain(r)
-        this._g = this.constrain(g)
-        this._b = this.constrain(b)
+        this._colour = new Colour(r, g, b)
     }
 
     //% blockCombine
@@ -262,27 +258,7 @@ class Pixel {
 
     //% blockCombine
     //% group="Shapes"
-    get red() { return this._r }
-
-    //% blockCombine
-    //% group="Shapes"
-    get green() { return this._g }
-
-    //% blockCombine
-    //% group="Shapes"
-    get blue() { return this._b }
-
-    //% blockCombine
-    //% group="Shapes"
-    get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
-
-    //% blockCombine
-    //% group="Shapes"
-    get on() { return this.red > 0 || this.green > 0 || this.blue > 0 }
-
-    constrain(value: number) {
-        return Math.constrain(value, 0, 255)
-    }
+    get colour() { return this._colour }
 }
 
 //% blockNamespace=graphics

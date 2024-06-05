@@ -1,4 +1,3 @@
-/*
 function runTestsInProgress (run: boolean) {
     if (!(run)) {
         return
@@ -10,21 +9,21 @@ function testSettingSpriteImage () {
     sprite.setImage(images.iconImage(IconNames.Heart))
     validateNumber("sprite image width", sprite.width, 5)
     validateNumber("sprite image height", sprite.height, 5)
-    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).red, 0)
-    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).green, 0)
-    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).blue, 0)
-    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).red, 255)
-    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).green, 255)
-    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).blue, 255)
-    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).brightness, 0)
-    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).brightness, 255)
-    validateNumber("sprite pixel 0,2", sprite.pixel(0, 2).brightness, 255)
-    validateNumber("sprite pixel 0,3", sprite.pixel(0, 3).brightness, 0)
-    validateNumber("sprite pixel 0,4", sprite.pixel(0, 3).brightness, 0)
-    validateNumber("sprite pixel 1,0", sprite.pixel(1, 0).brightness, 255)
-    validateNumber("sprite pixel 2,0", sprite.pixel(2, 0).brightness, 0)
-    validateNumber("sprite pixel 3,0", sprite.pixel(3, 0).brightness, 255)
-    validateNumber("sprite pixel 4,0", sprite.pixel(4, 0).brightness, 0)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.red, 0)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.green, 0)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.blue, 0)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).colour.red, 255)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).colour.green, 255)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).colour.blue, 255)
+    validateNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    validateNumber("sprite pixel 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    validateNumber("sprite pixel 0,2", sprite.pixel(0, 2).colour.brightness, 255)
+    validateNumber("sprite pixel 0,3", sprite.pixel(0, 3).colour.brightness, 0)
+    validateNumber("sprite pixel 0,4", sprite.pixel(0, 3).colour.brightness, 0)
+    validateNumber("sprite pixel 1,0", sprite.pixel(1, 0).colour.brightness, 255)
+    validateNumber("sprite pixel 2,0", sprite.pixel(2, 0).colour.brightness, 0)
+    validateNumber("sprite pixel 3,0", sprite.pixel(3, 0).colour.brightness, 255)
+    validateNumber("sprite pixel 4,0", sprite.pixel(4, 0).colour.brightness, 0)
 }
 function runTests () {
     failures = []
@@ -62,7 +61,7 @@ function demo () {
     demo_sprite.setImage(images.iconImage(IconNames.Heart))
     for (let x = 0; x <= 4; x++) {
         for (let y = 0; y <= 4; y++) {
-            led.plotBrightness(x, y, demo_canvas.pixel(x, y).brightness)
+            led.plotBrightness(x, y, demo_canvas.pixel(x, y).colour.brightness)
         }
     }
     basic.pause(demo_pause)
@@ -71,7 +70,7 @@ function demo () {
     demo_window = graphics.createWindow(demo_canvas)
     demo_change = demo_window.changes()
     for (let pixel of demo_change.pixels) {
-        led.plotBrightness(pixel.x, pixel.y, pixel.brightness)
+        led.plotBrightness(pixel.x, pixel.y, pixel.colour.brightness)
     }
     basic.pause(demo_pause)
     basic.clearScreen()
@@ -91,17 +90,17 @@ function demo () {
         }
     }
     for (let pixel2 of demo_change.pixels) {
-        led.plotBrightness(pixel2.x, pixel2.y, pixel2.brightness)
+        led.plotBrightness(pixel2.x, pixel2.y, pixel2.colour.brightness)
     }
 }
 function testCanvasUpdatesWithSpriteChanges () {
     canvas = graphics.createCanvas(40, 30)
     sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
-    validateNumber("sprite valid 0,0", sprite.pixel(0, 0).brightness, 0)
-    validateNumber("sprite valid 0,1", sprite.pixel(0, 1).brightness, 255)
-    validateNumber("canvas valid 0,0", canvas.pixel(0, 0).brightness, 0)
-    validateNumber("canvas valid 0,1", canvas.pixel(0, 1).brightness, 255)
+    validateNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    validateNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    validateNumber("canvas valid 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    validateNumber("canvas valid 0,1", canvas.pixel(0, 1).colour.brightness, 255)
 }
 function testInitialiseSprite () {
     canvas = graphics.createCanvas(40, 30)
@@ -127,10 +126,12 @@ let window: Window = null
 let failures: string[] = []
 let sprite: Sprite = null
 let canvas: Canvas = null
-let demo_mode = true
-if (demo_mode) {
-    demo()
-} else {
-    runTests()
+let demo_mode = false
+if (false) {
+    demo_mode = true
+    if (demo_mode) {
+        demo()
+    } else {
+        runTests()
+    }
 }
-*/
