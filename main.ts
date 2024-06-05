@@ -1,3 +1,4 @@
+/*
 function runTestsInProgress (run: boolean) {
     if (!(run)) {
         return
@@ -132,3 +133,4 @@ if (demo_mode) {
 } else {
     runTests()
 }
+*/
