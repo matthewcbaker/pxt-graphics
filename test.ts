@@ -1,4 +1,5 @@
 // tests go here; this will not be compiled when this package is used as an extension.
+namespace my_test_for_custom_graphics_blocks {
 function runTestsInProgress(run: boolean) {
     if (!(run)) {
         return
@@ -135,4 +136,5 @@ if (false) {
     } else {
         runTests()
     }
+}
 }
