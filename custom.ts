@@ -109,7 +109,15 @@ class Sprite {
 
     //% blockCombine
     //% group="Drawing"
+    set x(x: number) { this._x = x }
+
+    //% blockCombine
+    //% group="Drawing"
     get y() { return this._y }
+
+    //% blockCombine
+    //% group="Drawing"
+    set y(y: number) { this._y = y }
 
     //% blockCombine
     //% group="Drawing"
