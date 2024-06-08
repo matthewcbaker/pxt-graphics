@@ -13,9 +13,9 @@ class Assert {
         Assert._current = current
     }
 
-    static assertNumber(name: string, test: number, expected: number) {
-        if (test != expected) {
-            Assert._assertionFail(name, convertToText(expected), convertToText(test))
+    static assertNumber(name: string, actual: number, expected: number) {
+        if (actual != expected) {
+            Assert._assertionFail(name, convertToText(actual), convertToText(expected))
         }
     }
 
