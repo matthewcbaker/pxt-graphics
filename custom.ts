@@ -233,7 +233,8 @@ class Window {
             for (let y = 0; y < this._height; y++) {
                 pixel = this._canvas.pixel(x, y)
                 if (this._pixels[x][y] == undefined) {
-                    change.addPixel(pixel)
+                    if (pixel.colour.brightness > 0)
+                        change.addPixel(pixel)
                 } else if (
                     this._pixels[x][y].colour.red != pixel.colour.red ||
                     this._pixels[x][y].colour.green != pixel.colour.green ||
