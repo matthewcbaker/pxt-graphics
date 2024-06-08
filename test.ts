@@ -28,6 +28,14 @@ class Assert {
     }
 }
 
+function testInitialCanvas() {
+    Assert.setCurrent("testInitialCanvas")
+    let canvas = graphics.createCanvas(40, 30)
+    Assert.assertNumber("width", canvas.width, 40)
+    Assert.assertNumber("height", canvas.height, 30)
+}
+testInitialCanvas()
+
 function testInitialiseSprite() {
     Assert.setCurrent("testInitialiseSprite")
     let canvas = graphics.createCanvas(40, 30)
@@ -106,6 +114,15 @@ function testSpriteSetImageCanvasImpact() {
 }
 testSpriteSetImageCanvasImpact()
 
+function testInitialWindowFullCanvas() {
+    Assert.setCurrent("testInitialWindowFullCanvas")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    Assert.assertNumber("width", window.width, 40)
+    Assert.assertNumber("height", window.height, 30)
+}
+testInitialWindowFullCanvas()
+
 function testInitialChangesWhenBlank() {
     Assert.setCurrent("testInitialChangesWhenBlank")
     let canvas = graphics.createCanvas(40, 30)
@@ -122,5 +139,15 @@ function testInitialChangesWhenBlankSprite() {
     Assert.assertNumber("no changes", window.getChanges().length, 0)
 }
 testInitialChangesWhenBlankSprite()
+
+function testInitialChangesWithRegularSprite() {
+    Assert.setCurrent("testInitialChangesWithRegularSprite")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("change count", window.getChanges().length, 16)
+}
+testInitialChangesWithRegularSprite()
 
 Assert.result()

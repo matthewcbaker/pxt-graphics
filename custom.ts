@@ -59,6 +59,14 @@ class Canvas {
         this._height = Math.constrain(height, 1, 768)
     }
 
+    //% blockCombine
+    //% group="Canvas"
+    get width() { return this._width }
+
+    //% blockCombine
+    //% group="Canvas"
+    get height() { return this._height }
+
     /**
      * Create a sprite to be displayed on the canvas.
      * It will initially be blank.  To be displayed it
@@ -186,6 +194,14 @@ class Window {
         this._width = canvas._width
         this._height = canvas._height
     }
+
+    //% blockCombine
+    //% group="Window"
+    get width() { return this._width }
+
+    //% blockCombine
+    //% group="Window"
+    get height() { return this._height }
 
     /**
      * Gets the differences between the last change request and this one.
