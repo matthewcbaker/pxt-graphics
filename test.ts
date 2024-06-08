@@ -13,6 +13,12 @@ class Assert {
         Assert._current = current
     }
 
+    static assertTrue(name: string, actual: boolean) {
+        if (!actual) {
+            Assert._assertionFail(name, "false", "true")
+        }
+    }
+
     static assertNumber(name: string, actual: number, expected: number) {
         if (actual != expected) {
             Assert._assertionFail(name, convertToText(actual), convertToText(expected))
@@ -164,6 +170,36 @@ function testInitialChangesWithRegularSprite() {
     Assert.assertNumber("change count", window.changes().pixels.length, 16)
 }
 testInitialChangesWithRegularSprite()
+
+function testSubsequentChangesWithRegularSprite() {
+    Assert.setCurrent("testSubsequentChangesWithRegularSprite")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    window.changes()
+    Assert.assertNumber("no changes", window.changes().pixels.length, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("same image", window.changes().pixels.length, 0)
+    sprite.setImage(images.iconImage(IconNames.Ghost))
+    Assert.assertNumber("new image", window.changes().pixels.length, 7)
+}
+testSubsequentChangesWithRegularSprite()
+
+function testChangeContent() {
+    Assert.setCurrent("testChangeContent")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    let pixels = window.changes().pixels
+    for (let pixel of pixels) {
+        Assert.assertTrue("x range", pixel.x >= 0 && pixel.x <= 4)
+        Assert.assertTrue("y range", pixel.y >= 0 && pixel.y <= 4)
+        Assert.assertNumber("brightness", pixel.colour.brightness, 255)
+    }
+}
+testChangeContent()
 
 function testSpriteSetImageWindowImpactAfterChange() {
     Assert.setCurrent("testSpriteSetImageWindowImpactAfterChange")
