@@ -36,14 +36,14 @@ namespace graphics {
     //% g.min=0 g.max=255 g.defl=255
     //% b.min=0 b.max=255 b.defl=255
     export function createColourRGB(r: number, g: number, b: number) {
-        return Colour.create(r, g, b)
+        return new Colour(r, g, b)
     }
 
     //% block="$colour"
     //% group="Colours"
     //% colour.shadow="colorNumberPicker"
     export function createColourHex(colour: number) {
-        return Colour.create(5, 5, 5)
+        return new Colour(5, 5, 5)
     }
 }
 
@@ -52,7 +52,6 @@ class Canvas {
     _width: number = 0;
     _height: number = 0;
     _sprites: Sprite[] = [];
-    _background_colour: Colour = Colour.create(0, 0, 0);
 
     constructor(width: number, height: number) {
         this._width = Math.constrain(width, 1, 1024)
@@ -71,7 +70,7 @@ class Canvas {
     //% group="Drawing"
     //% weight=51
     public createSprite(): Sprite {
-        let sprite = new Sprite(0, 0);
+        let sprite = new Sprite();
         this._sprites.push(sprite);
         return sprite;
     }
@@ -82,42 +81,22 @@ class Canvas {
     //% group="Canvas"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(x, y, this._background_colour);
+            return new Pixel(x, y, 0, 0, 0);
         for (let i = 0; i < this._sprites.length; i++) {
             return this._sprites[i].pixel(x, y)
         }
-        return new Pixel(x, y, this._background_colour)
+        return new Pixel(x, y, 0, 0, 0)
     }
 }
 
 //% blockNamespace=graphics
 class Sprite {
-    _x: number = 0
-    _y: number = 0
     _width: number = 0;
     _height: number = 0;
-    _pixels: {[key: number]: {[key: number]: Pixel}} = {};
+    _pixels: { [key: number]: { [key: number]: Pixel } } = {};
 
-    constructor(x: number, y: number) {
-        this._x = x
-        this._y = y
+    constructor() {
     }
-
-    //% blockCombine
-    //% group="Drawing"
-    get x() { return this._x }
-
-    //% blockCombine
-    //% group="Drawing"
-    set x(x: number) { this._x = x }
-
-    //% blockCombine
-    //% group="Drawing"
-    get y() { return this._y }
-
-    //% blockCombine
-    //% group="Drawing"
-    set y(y: number) { this._y = y }
 
     //% blockCombine
     //% group="Drawing"
@@ -133,22 +112,20 @@ class Sprite {
     //% group="Drawing"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return new Pixel(x, y, 0, 0, 0)
         if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return new Pixel(x, y, 0, 0, 0)
         return this._pixels[x][y]
     }
 
     /**
      * Replace the current sprite graphics with a basic image.
      */
-    //% block="set $this to image $image||with colour $colour"
+    //% block="set $this to image $image"
     //% this.defl=sprite
     //% this.shadow=variables_get
-    //% expandableArgumentMode=enabled
     //% group="Drawing"
-    public setImage(image: Image, colour?: Colour): void {
-        if (colour === undefined) colour = Colour.create(0, 0, 0)
+    public setImage(image: Image): void {
         this._width = image.width()
         this._height = image.height()
         this._pixels = {}
@@ -156,18 +133,18 @@ class Sprite {
             for (let y = 0; y < image.height(); y++) {
                 if (image.pixel(x, y)) {
                     let b = image.pixelBrightness(x, y)
-                    this.setPixel(x, y, colour)
+                    this.setPixel(x, y, b, b, b)
                 } else {
-                    this.setPixel(x, y, Colour.create(0, 0, 0))
+                    this.setPixel(x, y, 0, 0, 0)
                 }
             }
         }
     }
 
-    setPixel(x: number, y: number, colour: Colour): void {
+    setPixel(x: number, y: number, r: number, g: number, b: number): void {
         if (this._pixels[x] == undefined)
             this._pixels[x] = {}
-        this._pixels[x][y] = new Pixel(x, y, colour)
+        this._pixels[x][y] = new Pixel(x, y, r, g, b)
     }
 }
 
@@ -204,10 +181,10 @@ class Window {
                 if (this._pixels[x][y] == undefined) {
                     change.addPixel(pixel)
                 } else if (
-                    this._pixels[x][y].colour.red != pixel.colour.red ||
-                    this._pixels[x][y].colour.green != pixel.colour.green ||
-                    this._pixels[x][y].colour.blue != pixel.colour.blue
-                    ) {
+                    this._pixels[x][y].red != pixel.red ||
+                    this._pixels[x][y].red != pixel.green ||
+                    this._pixels[x][y].red != pixel.blue
+                ) {
                     change.addPixel(pixel)
                 }
                 this._pixels[x][y] = pixel
@@ -236,7 +213,7 @@ class Change {
 
     constructor() {
     }
-    
+
     //% blockCombine
     //% group="Window"
     get pixels() { return this._pixels }
@@ -263,12 +240,16 @@ class Change {
 class Pixel {
     _x: number
     _y: number
-    _colour: Colour
+    _r: number
+    _g: number
+    _b: number
 
-    constructor(x: number, y: number, colour: Colour) {
+    constructor(x: number, y: number, r: number, g: number, b: number) {
         this._x = x
         this._y = y
-        this._colour = colour
+        this._r = this.constrain(r)
+        this._g = this.constrain(g)
+        this._b = this.constrain(b)
     }
 
     //% blockCombine
@@ -281,7 +262,27 @@ class Pixel {
 
     //% blockCombine
     //% group="Shapes"
-    get colour() { return this._colour }
+    get red() { return this._r }
+
+    //% blockCombine
+    //% group="Shapes"
+    get green() { return this._g }
+
+    //% blockCombine
+    //% group="Shapes"
+    get blue() { return this._b }
+
+    //% blockCombine
+    //% group="Shapes"
+    get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
+
+    //% blockCombine
+    //% group="Shapes"
+    get on() { return this.red > 0 || this.green > 0 || this.blue > 0 }
+
+    constrain(value: number) {
+        return Math.constrain(value, 0, 255)
+    }
 }
 
 //% blockNamespace=graphics
@@ -290,14 +291,10 @@ class Colour {
     _g: number
     _b: number
 
-    static create(r: number, g: number, b: number): Colour {
-        return new Colour(r, g, b)
-    }
-
     constructor(r: number, g: number, b: number) {
-        this._r = this._constrain(r)
-        this._g = this._constrain(g)
-        this._b = this._constrain(b)
+        this._r = this.constrain(r)
+        this._g = this.constrain(g)
+        this._b = this.constrain(b)
     }
 
     //% blockCombine
@@ -316,7 +313,7 @@ class Colour {
     //% group="Colours"
     get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
 
-    _constrain(value: number) {
+    constrain(value: number) {
         return Math.constrain(value, 0, 255)
     }
 }
