@@ -148,15 +148,18 @@ class Sprite {
     //% expandableArgumentMode=enabled
     //% group="Drawing"
     public setImage(image: Image, colour?: Colour): void {
-        if (colour === undefined) colour = Colour.create(0, 0, 0)
         this._width = image.width()
         this._height = image.height()
         this._pixels = {}
         for (let x = 0; x < image.width(); x++) {
             for (let y = 0; y < image.height(); y++) {
                 if (image.pixel(x, y)) {
-                    let b = image.pixelBrightness(x, y)
-                    this.setPixel(x, y, colour)
+                    if (colour === undefined) {
+                        let b = image.pixelBrightness(x, y)
+                        this.setPixel(x, y, Colour.create(b, b, b))
+                    } else {
+                        this.setPixel(x, y, colour)
+                    }
                 } else {
                     this.setPixel(x, y, Colour.create(0, 0, 0))
                 }
