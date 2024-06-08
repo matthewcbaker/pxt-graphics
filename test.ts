@@ -123,6 +123,21 @@ function testInitialWindowFullCanvas() {
 }
 testInitialWindowFullCanvas()
 
+function testSpriteSetImageNoWindowImpact() {
+    Assert.setCurrent("testSpriteSetImageNoWindowImpact")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("window blank 0,1", window.pixel(0, 1).colour.brightness, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    Assert.assertNumber("window valid 0,0", window.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("window valid 0,1", window.pixel(0, 1).colour.brightness, 0)
+}
+testSpriteSetImageNoWindowImpact()
+
 function testInitialChangesWhenBlank() {
     Assert.setCurrent("testInitialChangesWhenBlank")
     let canvas = graphics.createCanvas(40, 30)
@@ -149,5 +164,21 @@ function testInitialChangesWithRegularSprite() {
     Assert.assertNumber("change count", window.getChanges().length, 16)
 }
 testInitialChangesWithRegularSprite()
+
+function testSpriteSetImageWindowImpactAfterChange() {
+    Assert.setCurrent("testSpriteSetImageWindowImpactAfterChange")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("window blank 0,1", window.pixel(0, 1).colour.brightness, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    window.getChanges()
+    Assert.assertNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    Assert.assertNumber("window valid 0,0", window.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("window valid 0,1", window.pixel(0, 1).colour.brightness, 255)
+}
+testSpriteSetImageWindowImpactAfterChange()
 
 Assert.result()

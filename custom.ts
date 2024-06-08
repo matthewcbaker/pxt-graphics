@@ -203,6 +203,18 @@ class Window {
     //% group="Window"
     get height() { return this._height }
 
+    //% block="$this pixel x$x y$y"
+    //% this.defl=window
+    //% this.shadow=variables_get
+    //% group="Window"
+    public pixel(x: number, y: number) {
+        if (x < 0 || x >= this._width || y < 0 || y >= this._height)
+            return new Pixel(x, y, Colour.create(0, 0, 0))
+        if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
+            return new Pixel(x, y, Colour.create(0, 0, 0))
+        return this._pixels[x][y]
+    }
+
     /**
      * Gets the differences between the last change request and this one.
      */
