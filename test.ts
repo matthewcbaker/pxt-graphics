@@ -37,19 +37,21 @@ function testInitialiseSprite() {
 }
 testInitialiseSprite()
 
-function testSettingSpriteImage() {
-    Assert.setCurrent("testSettingSpriteImage")
+function testSpriteSetImageSize() {
+    Assert.setCurrent("testSpriteSetImageSize")
     let canvas = graphics.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite image width", sprite.width, 5)
     Assert.assertNumber("sprite image height", sprite.height, 5)
-    Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
-    Assert.assertNumber("sprite pixel 0,0,g", sprite.pixel(0, 0).colour.green, 0)
-    Assert.assertNumber("sprite pixel 0,0,b", sprite.pixel(0, 0).colour.blue, 0)
-    Assert.assertNumber("sprite pixel 0,1,r", sprite.pixel(0, 1).colour.red, 255)
-    Assert.assertNumber("sprite pixel 0,1,g", sprite.pixel(0, 1).colour.green, 255)
-    Assert.assertNumber("sprite pixel 0,1,b", sprite.pixel(0, 1).colour.blue, 255)
+}
+testSpriteSetImageSize()
+
+function testSpriteSetImagePixels() {
+    Assert.setCurrent("testSpriteSetImagePixels")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("sprite pixel 0,1", sprite.pixel(0, 1).colour.brightness, 255)
     Assert.assertNumber("sprite pixel 0,2", sprite.pixel(0, 2).colour.brightness, 255)
@@ -60,19 +62,49 @@ function testSettingSpriteImage() {
     Assert.assertNumber("sprite pixel 3,0", sprite.pixel(3, 0).colour.brightness, 255)
     Assert.assertNumber("sprite pixel 4,0", sprite.pixel(4, 0).colour.brightness, 0)
 }
-testSettingSpriteImage()
+testSpriteSetImagePixels()
 
-function testSpriteSetImage() {
-    Assert.setCurrent("testSpriteSetImage")
+function testSpriteSetImageNoColour() {
+    Assert.setCurrent("testSpriteSetImageNoColour")
     let canvas = graphics.createCanvas(40, 30)
     let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
+    Assert.assertNumber("sprite pixel 0,0,g", sprite.pixel(0, 0).colour.green, 0)
+    Assert.assertNumber("sprite pixel 0,0,b", sprite.pixel(0, 0).colour.blue, 0)
+    Assert.assertNumber("sprite pixel 0,1,r", sprite.pixel(0, 1).colour.red, 255)
+    Assert.assertNumber("sprite pixel 0,1,g", sprite.pixel(0, 1).colour.green, 255)
+    Assert.assertNumber("sprite pixel 0,1,b", sprite.pixel(0, 1).colour.blue, 255)
+}
+testSpriteSetImageNoColour()
+
+function testSpriteSetImageWithColour() {
+    Assert.setCurrent("testSpriteSetImageWithColour")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart), graphics.createColourRGB(200, 100, 50))
+    Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
+    Assert.assertNumber("sprite pixel 0,0,g", sprite.pixel(0, 0).colour.green, 0)
+    Assert.assertNumber("sprite pixel 0,0,b", sprite.pixel(0, 0).colour.blue, 0)
+    Assert.assertNumber("sprite pixel 0,1,r", sprite.pixel(0, 1).colour.red, 200)
+    Assert.assertNumber("sprite pixel 0,1,g", sprite.pixel(0, 1).colour.green, 100)
+    Assert.assertNumber("sprite pixel 0,1,b", sprite.pixel(0, 1).colour.blue, 50)
+}
+testSpriteSetImageWithColour()
+
+function testSpriteSetImageCanvasImpact() {
+    Assert.setCurrent("testSpriteSetImageCanvasImpact")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite()
+    Assert.assertNumber("canvas blank 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas blank 0,1", canvas.pixel(0, 1).colour.brightness, 0)
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
     Assert.assertNumber("canvas valid 0,0", canvas.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("canvas valid 0,1", canvas.pixel(0, 1).colour.brightness, 255)
 }
-testSpriteSetImage()
+testSpriteSetImageCanvasImpact()
 
 function testInitialChangesWhenBlank() {
     Assert.setCurrent("testInitialChangesWhenBlank")
