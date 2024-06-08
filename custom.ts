@@ -71,7 +71,7 @@ class Canvas {
     //% group="Drawing"
     //% weight=51
     public createSprite(): Sprite {
-        let sprite = new Sprite();
+        let sprite = new Sprite(0, 0);
         this._sprites.push(sprite);
         return sprite;
     }
@@ -92,12 +92,24 @@ class Canvas {
 
 //% blockNamespace=graphics
 class Sprite {
+    _x: number = 0
+    _y: number = 0
     _width: number = 0;
     _height: number = 0;
     _pixels: {[key: number]: {[key: number]: Pixel}} = {};
 
-    constructor() {
+    constructor(x: number, y: number) {
+        this._x = x
+        this._y = y
     }
+
+    //% blockCombine
+    //% group="Drawing"
+    get x() { return this._x }
+
+    //% blockCombine
+    //% group="Drawing"
+    get y() { return this._y }
 
     //% blockCombine
     //% group="Drawing"
