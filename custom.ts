@@ -91,8 +91,12 @@ class Canvas {
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return new Pixel(x, y, this._background_colour);
-        for (let i = 0; i < this._sprites.length; i++) {
-            return this._sprites[i].pixel(x, y)
+        for (let i = this._sprites.length - 1; i >= 0; i--) {
+            let sprite = this._sprites[i]
+            if (x >= sprite.x && x < sprite.x + sprite.width &&
+                y >= sprite.y && y < sprite.y + sprite.height) {
+                return this._sprites[i].pixel(x - sprite.x, y - sprite.y)
+            }
         }
         return new Pixel(x, y, this._background_colour)
     }

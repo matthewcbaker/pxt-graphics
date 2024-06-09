@@ -217,4 +217,43 @@ function testSpriteSetImageWindowImpactAfterChange() {
 }
 testSpriteSetImageWindowImpactAfterChange()
 
+function testSpriteMoveX() {
+    Assert.setCurrent("testSpriteMoveX")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("canvas initial 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas initial 1,0", canvas.pixel(1, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas initial 2,0", canvas.pixel(2, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas initial 3,0", canvas.pixel(3, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas initial 4,0", canvas.pixel(4, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas initial 5,0", canvas.pixel(5, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas initial 6,0", canvas.pixel(6, 0).colour.brightness, 0)
+    sprite.x = 1
+    Assert.assertNumber("canvas 1 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 1 1,0", canvas.pixel(1, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 1 2,0", canvas.pixel(2, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 1 3,0", canvas.pixel(3, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 1 4,0", canvas.pixel(4, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 1 5,0", canvas.pixel(5, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 1 6,0", canvas.pixel(6, 0).colour.brightness, 0)
+    sprite.x = 2
+    Assert.assertNumber("canvas 2 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 2 1,0", canvas.pixel(1, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 2 2,0", canvas.pixel(2, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 2 3,0", canvas.pixel(3, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 2 4,0", canvas.pixel(4, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 2 5,0", canvas.pixel(5, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 2 6,0", canvas.pixel(6, 0).colour.brightness, 0)
+    sprite.x = 0
+    Assert.assertNumber("canvas 0 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 0 1,0", canvas.pixel(1, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 0 2,0", canvas.pixel(2, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 0 3,0", canvas.pixel(3, 0).colour.brightness, 255)
+    Assert.assertNumber("canvas 0 4,0", canvas.pixel(4, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 0 5,0", canvas.pixel(5, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas 0 6,0", canvas.pixel(6, 0).colour.brightness, 0)
+}
+testSpriteMoveX()
+
 Assert.result()
