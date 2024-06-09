@@ -238,13 +238,13 @@ class Window {
                 pixel = this._canvas.pixel(x, y)
                 if (this._pixels[x][y] == undefined) {
                     if (pixel.colour.brightness > 0)
-                        change.addPixel(pixel)
+                        change.addPixel(x, y, pixel)
                 } else if (
                     this._pixels[x][y].colour.red != pixel.colour.red ||
                     this._pixels[x][y].colour.green != pixel.colour.green ||
                     this._pixels[x][y].colour.blue != pixel.colour.blue
                 ) {
-                    change.addPixel(pixel)
+                    change.addPixel(x, y, pixel)
                 }
                 this._pixels[x][y] = pixel
             }
@@ -268,7 +268,7 @@ class Window {
 
 //% blockNamespace=graphics
 class Change {
-    _pixels: Pixel[] = [];
+    _pixels: PixelChange[] = [];
 
     constructor() {
     }
@@ -277,8 +277,8 @@ class Change {
     //% group="Window"
     get pixels() { return this._pixels }
 
-    addPixel(pixel: Pixel): void {
-        this._pixels.push(pixel)
+    addPixel(x: number, y: number, pixel: Pixel): void {
+        this._pixels.push(new PixelChange(x, y, pixel))
     }
 
     /**
@@ -296,6 +296,31 @@ class Change {
 }
 
 //% blockNamespace=graphics
+class PixelChange {
+    _x: number
+    _y: number
+    _pixel: Pixel
+
+    constructor(x: number, y: number, pixel: Pixel) {
+        this._x = x
+        this._y = y
+        this._pixel = pixel
+    }
+
+    //% blockCombine
+    //% group="Shapes"
+    get x() { return this._x }
+
+    //% blockCombine
+    //% group="Shapes"
+    get y() { return this._y }
+
+    //% blockCombine
+    //% group="Shapes"
+    get colour() { return this._pixel.colour }
+}
+
+//% blockNamespace=graphics
 class Pixel {
     _x: number
     _y: number
@@ -309,11 +334,11 @@ class Pixel {
 
     //% blockCombine
     //% group="Shapes"
-    get x() { return this._x }
+    //get x() { return this._x }
 
     //% blockCombine
     //% group="Shapes"
-    get y() { return this._y }
+    //get y() { return this._y }
 
     //% blockCombine
     //% group="Shapes"
