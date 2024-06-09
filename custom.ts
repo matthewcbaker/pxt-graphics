@@ -52,7 +52,7 @@ class Canvas {
     _width: number = 0;
     _height: number = 0;
     _sprites: Sprite[] = [];
-    _background_colour: Colour = Colour.create(0, 0, 0);
+    _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0));
 
     constructor(width: number, height: number) {
         this._width = Math.constrain(width, 1, 1024)
@@ -88,17 +88,17 @@ class Canvas {
     //% this.defl=canvas
     //% this.shadow=variables_get
     //% group="Canvas"
-    public pixel(x: number, y: number) {
+    public pixel(x: number, y: number): Pixel {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(x, y, this._background_colour);
+            return this._background_pixel;
         for (let i = this._sprites.length - 1; i >= 0; i--) {
             let sprite = this._sprites[i]
             if (x >= sprite.x && x < sprite.x + sprite.width &&
                 y >= sprite.y && y < sprite.y + sprite.height) {
-                return new Pixel(x, y, this._sprites[i].pixel(x - sprite.x, y - sprite.y).colour)
+                return this._sprites[i].pixel(x - sprite.x, y - sprite.y)
             }
         }
-        return new Pixel(x, y, this._background_colour)
+        return this._background_pixel
     }
 }
 
@@ -109,6 +109,7 @@ class Sprite {
     _width: number = 0;
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
+    _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
 
     constructor(x: number, y: number) {
         this._x = x
@@ -145,9 +146,9 @@ class Sprite {
     //% group="Drawing"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return this._background_pixel
         if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return this._background_pixel
         return this._pixels[x][y]
     }
 
@@ -182,7 +183,7 @@ class Sprite {
     setPixel(x: number, y: number, colour: Colour): void {
         if (this._pixels[x] == undefined)
             this._pixels[x] = {}
-        this._pixels[x][y] = new Pixel(x, y, colour)
+        this._pixels[x][y] = new Pixel(colour)
     }
 }
 
@@ -192,6 +193,7 @@ class Window {
     _width: number = 0;
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
+    _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
 
     constructor(canvas: Canvas) {
         this._canvas = canvas
@@ -213,9 +215,9 @@ class Window {
     //% group="Window"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return this._background_pixel
         if (this._pixels[x] == undefined || this._pixels[x][y] == undefined)
-            return new Pixel(x, y, Colour.create(0, 0, 0))
+            return this._background_pixel
         return this._pixels[x][y]
     }
 
@@ -322,13 +324,14 @@ class PixelChange {
 
 //% blockNamespace=graphics
 class Pixel {
-    _x: number
-    _y: number
+    //_x: number
+    //_y: number
     _colour: Colour
 
-    constructor(x: number, y: number, colour: Colour) {
-        this._x = x
-        this._y = y
+    //constructor(x: number, y: number, colour: Colour) {
+    constructor(colour: Colour) {
+        //this._x = x
+        //this._y = y
         this._colour = colour
     }
 
