@@ -95,7 +95,7 @@ class Canvas {
             let sprite = this._sprites[i]
             if (x >= sprite.x && x < sprite.x + sprite.width &&
                 y >= sprite.y && y < sprite.y + sprite.height) {
-                return this._sprites[i].pixel(x - sprite.x, y - sprite.y)
+                return new Pixel(x, y, this._sprites[i].pixel(x - sprite.x, y - sprite.y).colour)
             }
         }
         return new Pixel(x, y, this._background_colour)

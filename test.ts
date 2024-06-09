@@ -237,7 +237,7 @@ function testSpriteMoveX() {
     Assert.assertNumber("canvas 1 4,0", canvas.pixel(4, 0).colour.brightness, 255)
     Assert.assertNumber("canvas 1 5,0", canvas.pixel(5, 0).colour.brightness, 0)
     Assert.assertNumber("canvas 1 6,0", canvas.pixel(6, 0).colour.brightness, 0)
-    sprite.x = 2
+    sprite.x += 1
     Assert.assertNumber("canvas 2 0,0", canvas.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("canvas 2 1,0", canvas.pixel(1, 0).colour.brightness, 0)
     Assert.assertNumber("canvas 2 2,0", canvas.pixel(2, 0).colour.brightness, 0)
@@ -255,5 +255,41 @@ function testSpriteMoveX() {
     Assert.assertNumber("canvas 0 6,0", canvas.pixel(6, 0).colour.brightness, 0)
 }
 testSpriteMoveX()
+
+function testSpriteMoveWindow() {
+    Assert.setCurrent("testSpriteMoveWindow")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    sprite.x = 1
+    window.changes()
+    Assert.assertNumber("window 1 0,0", window.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("window 1 1,0", window.pixel(1, 0).colour.brightness, 0)
+    Assert.assertNumber("window 1 2,0", window.pixel(2, 0).colour.brightness, 255)
+    Assert.assertNumber("window 1 3,0", window.pixel(3, 0).colour.brightness, 0)
+    Assert.assertNumber("window 1 4,0", window.pixel(4, 0).colour.brightness, 255)
+    Assert.assertNumber("window 1 5,0", window.pixel(5, 0).colour.brightness, 0)
+    Assert.assertNumber("window 1 6,0", window.pixel(6, 0).colour.brightness, 0)
+}
+testSpriteMoveWindow()
+
+function testSpriteMoveChanges() {
+    Assert.setCurrent("testSpriteMoveChanges")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("change count before", window.changes().pixels.length, 16)
+    sprite.x = 1
+    Assert.assertNumber("change count after", window.changes().pixels.length, 12)
+    sprite.x = 11
+    window.changes()
+    sprite.x = 12
+    for (let change of window.changes().pixels) {
+        Assert.assertTrue("change values", change.x > 10)
+    }
+}
+testSpriteMoveChanges()
 
 Assert.result()
