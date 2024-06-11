@@ -30,6 +30,21 @@ namespace graphics {
         return new Window(canvas);
     }
 
+    /**
+     * Called whenever there are changes available
+     */
+    //% block="on window $change"
+    //% group="Window"
+    //% weight=51
+    //% draggableParameters="reporter"
+    export function onWindowChange(handler: (change: Change) => void) {
+        let change: Change = new Change();
+        loops.everyInterval(1000, function () {
+            if (false)
+                handler(change);
+        })
+    }
+
     //% block="red$r green$g blue$b"
     //% group="Colours"
     //% r.min=0 r.max=255 r.defl=255
