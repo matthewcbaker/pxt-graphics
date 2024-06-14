@@ -3,7 +3,7 @@
  * Graphics assistance
  */
 //% weight=10 color="#de26a7" icon="\uf302"
-//% groups=['Canvas', 'Drawing', 'Window', 'Shapes']
+//% groups=['Canvas', 'Window', 'Changes', 'Sprites', 'Colours', 'Pixels']
 namespace graphics {
 
     /**
@@ -23,6 +23,8 @@ namespace graphics {
      * Creates a window to view a section of canvas.
      */
     //% block="create window to view $canvas"
+    //% canvas.defl=canvas
+    //% canvas.shadow=variables_get
     //% group="Window"
     //% blockSetVariable=window
     //% weight=52
@@ -34,8 +36,8 @@ namespace graphics {
      * Called whenever there are changes available
      */
     //% block="on window $change"
-    //% group="Window"
-    //% weight=51
+    //% group="Changes"
+    //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
         let change: Change = new Change();
@@ -43,6 +45,21 @@ namespace graphics {
             if (false)
                 handler(change);
         })
+    }
+
+    /**
+     * Create a sprite to be displayed on the canvas.
+     * It will initially be blank.  To be displayed it
+     * must have something added to it.
+     */
+    //% block="add sprite to $canvas"
+    //% canvas.defl=canvas
+    //% canvas.shadow=variables_get
+    //% blockSetVariable=sprite
+    //% group="Sprites"
+    //% weight=51
+    export function createSprite(canvas: Canvas) {
+        return canvas.createSprite()
     }
 
     //% block="red$r green$g blue$b"
@@ -93,6 +110,7 @@ class Canvas {
     //% blockSetVariable=sprite
     //% group="Drawing"
     //% weight=51
+    //% deprecated=true
     public createSprite(): Sprite {
         let sprite = new Sprite(0, 0);
         this._sprites.push(sprite);
@@ -102,7 +120,7 @@ class Canvas {
     //% block="$this pixel x$x y$y"
     //% this.defl=canvas
     //% this.shadow=variables_get
-    //% group="Canvas"
+    //% group="Pixels"
     public pixel(x: number, y: number): Pixel {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return this._background_pixel;
@@ -132,33 +150,33 @@ class Sprite {
     }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     get x() { return this._x }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     set x(x: number) { this._x = x }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     get y() { return this._y }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     set y(y: number) { this._y = y }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     get width() { return this._width }
 
     //% blockCombine
-    //% group="Drawing"
+    //% group="Sprites"
     get height() { return this._height }
 
     //% block="$this pixel x$x y$y"
     //% this.defl=sprite
     //% this.shadow=variables_get
-    //% group="Drawing"
+    //% group="Pixels"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return this._background_pixel
@@ -174,7 +192,7 @@ class Sprite {
     //% this.defl=sprite
     //% this.shadow=variables_get
     //% expandableArgumentMode=enabled
-    //% group="Drawing"
+    //% group="Sprites"
     public setImage(image: Image, colour?: Colour): void {
         this._width = image.width()
         this._height = image.height()
@@ -227,7 +245,7 @@ class Window {
     //% block="$this pixel x$x y$y"
     //% this.defl=window
     //% this.shadow=variables_get
-    //% group="Window"
+    //% group="Pixels"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return this._background_pixel
@@ -243,8 +261,9 @@ class Window {
     //% this.defl=window
     //% this.shadow=variables_get
     //% blockSetVariable=change
-    //% group="Window"
+    //% group="Changes"
     //% weight=51
+    //% deprecated=true
     public changes(): Change {
         let change = new Change()
         let pixel = null
@@ -296,24 +315,11 @@ class Change {
     }
 
     //% blockCombine
-    //% group="Window"
+    //% group="Changes"
     get pixels() { return this._pixels }
 
     addPixel(x: number, y: number, pixel: Pixel): void {
         this._pixels.push(new PixelChange(x, y, pixel))
-    }
-
-    /**
-     * Gets the individual pixels that have changed.
-     */
-    //% block="$this get pixels"
-    //% this.defl=change
-    //% this.shadow=variables_get
-    //% group="Window"
-    //% weight=5
-    //% deprecated=true
-    public getPixels(): Pixel[] {
-        return []
     }
 }
 
@@ -330,15 +336,29 @@ class PixelChange {
     }
 
     //% blockCombine
-    //% group="Shapes"
+    //% group="Changes"
     get x() { return this._x }
 
     //% blockCombine
-    //% group="Shapes"
+    //% group="Changes"
     get y() { return this._y }
 
     //% blockCombine
-    //% group="Shapes"
+    //% group="Changes"
+    get red() { return this._pixel.red }
+
+    //% blockCombine
+    //% group="Changes"
+    get green() { return this._pixel.green }
+
+    //% blockCombine
+    //% group="Changes"
+    get blue() { return this._pixel.blue }
+
+    //% blockCombine
+    //% group="Changes"
+    get brightness() { return this._pixel.brightness }
+
     get colour() { return this._pixel.colour }
 }
 
@@ -356,15 +376,21 @@ class Pixel {
     }
 
     //% blockCombine
-    //% group="Shapes"
-    //get x() { return this._x }
+    //% group="Pixels"
+    get red() { return this._colour.red }
 
     //% blockCombine
-    //% group="Shapes"
-    //get y() { return this._y }
+    //% group="Pixels"
+    get green() { return this._colour.green }
 
     //% blockCombine
-    //% group="Shapes"
+    //% group="Pixels"
+    get blue() { return this._colour.blue }
+
+    //% blockCombine
+    //% group="Pixels"
+    get brightness() { return this._colour.brightness }
+
     get colour() { return this._colour }
 }
 
@@ -384,20 +410,12 @@ class Colour {
         this._b = this._constrain(b)
     }
 
-    //% blockCombine
-    //% group="Colours"
     get red() { return this._r }
 
-    //% blockCombine
-    //% group="Colours"
     get green() { return this._g }
 
-    //% blockCombine
-    //% group="Colours"
     get blue() { return this._b }
 
-    //% blockCombine
-    //% group="Colours"
     get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
 
     _constrain(value: number) {
