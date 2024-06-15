@@ -300,36 +300,44 @@ class Window {
     //% deprecated=true
     public changes(): Change {
         if (!this.events)
-            return this.calculateChanges()
+            return this.calculateAllChanges()
         if (this._changes.length > 0)
             return this._changes.shift()
         return this._no_change
     }
 
-    private calculateChanges() {
+    private calculateAllChanges() {
+        let changelist = []
+        for (let x = 0; x < this._width; x++)
+            for (let y = 0; y < this._height; y++)
+                changelist.push({'x': x, 'y': y})
+        return this.calculateChanges(changelist)
+    }
+
+    private calculateChanges(changelist: {x: number, y: number}[]) {
         let change = new Change()
         let pixel = null
-        for (let x = 0; x < this._width; x++) {
+        for (let ch of changelist) {
+            let x = ch.x
+            let y = ch.y
             if (this._pixels[x] == undefined)
                 this._pixels[x] = {}
-            for (let y = 0; y < this._height; y++) {
-                pixel = this._canvas.pixel(x, y)
-                if (this._pixels[x][y] == undefined) {
-                    if (pixel.colour.brightness > 0) {
-                        change.addPixel(x, y, pixel)
-                        this._pixels[x][y] = pixel
-                    }
-                } else if (
-                    this._pixels[x][y].colour.red != pixel.colour.red ||
-                    this._pixels[x][y].colour.green != pixel.colour.green ||
-                    this._pixels[x][y].colour.blue != pixel.colour.blue
-                ) {
+            pixel = this._canvas.pixel(x, y)
+            if (this._pixels[x][y] == undefined) {
+                if (pixel.colour.brightness > 0) {
                     change.addPixel(x, y, pixel)
-                    if (pixel.colour.brightness > 0)
-                        this._pixels[x][y] = pixel
-                    else
-                        delete this._pixels[x][y]
+                    this._pixels[x][y] = pixel
                 }
+            } else if (
+                this._pixels[x][y].colour.red != pixel.colour.red ||
+                this._pixels[x][y].colour.green != pixel.colour.green ||
+                this._pixels[x][y].colour.blue != pixel.colour.blue
+            ) {
+                change.addPixel(x, y, pixel)
+                if (pixel.colour.brightness > 0)
+                    this._pixels[x][y] = pixel
+                else
+                    delete this._pixels[x][y]
             }
         }
         return change
@@ -337,7 +345,7 @@ class Window {
 
     public change(): void {
         if (this.events) {
-            let change = this.calculateChanges()
+            let change = this.calculateAllChanges()
             if (change.pixels.length > 0)
                 this._changes.push(change)
         }
