@@ -182,7 +182,7 @@ class Sprite {
 
     //% blockCombine
     //% group="Sprites"
-    set x(x: number) { this._x = x }
+    set x(x: number) { this._x = x; this._callback.change(); }
 
     //% blockCombine
     //% group="Sprites"
@@ -190,7 +190,7 @@ class Sprite {
 
     //% blockCombine
     //% group="Sprites"
-    set y(y: number) { this._y = y }
+    set y(y: number) { this._y = y; this._callback.change(); }
 
     //% blockCombine
     //% group="Sprites"
