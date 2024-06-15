@@ -302,7 +302,6 @@ function testInitialChangesOnWindowChange() {
         changecount = change.pixels.length
     })
     sprite.setImage(images.iconImage(IconNames.Heart))
-    Assert.assertNumber("window count", window.changesX, 1)
     basic.pause(1)
     Assert.assertNumber("change count", changecount, 16)
 }

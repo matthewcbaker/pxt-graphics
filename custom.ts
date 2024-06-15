@@ -50,12 +50,11 @@ namespace graphics {
         for (let i = 0; i < _windows.length; i++)
             _windows[i].events = true
         loops.everyInterval(10, function () {
-            for (let i = 0; i < _windows.length; i++)
-                if (_windows[i].changesX > 0) {
-                    let changes = _windows[i].getChanges();
-                    for (let ch = 0; ch < changes.length; ch++)
-                        handler(changes[ch]);
-                }
+            for (let i = 0; i < _windows.length; i++) {
+                let changes = _windows[i].changes();
+                if (changes.pixels.length > 0)
+                    handler(changes);
+            }
         })
     }
 
@@ -256,6 +255,7 @@ class Window {
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
     _changes: Change[] = []
+    _no_change: Change = new Change()
     _events: boolean = true
 
     constructor(canvas: Canvas) {
@@ -275,8 +275,6 @@ class Window {
     get events() { return this._events }
 
     set events(events: boolean) { this._events = events }
-
-    get changesX() { return this._changes.length }
 
     //% block="$this pixel x$x y$y"
     //% this.defl=window
@@ -301,6 +299,14 @@ class Window {
     //% weight=51
     //% deprecated=true
     public changes(): Change {
+        if (!this.events)
+            return this.calculateChanges()
+        if (this._changes.length > 0)
+            return this._changes.shift()
+        return this._no_change
+    }
+
+    private calculateChanges() {
         let change = new Change()
         let pixel = null
         for (let x = 0; x < this._width; x++) {
@@ -331,25 +337,10 @@ class Window {
 
     public change(): void {
         if (this.events) {
-            let change = this.changes()
+            let change = this.calculateChanges()
             if (change.pixels.length > 0)
                 this._changes.push(change)
         }
-    }
-
-    /**
-     * Gets the differences between the last change request and this one.
-     */
-    //% block="get changes to $this"
-    //% this.defl=window
-    //% this.shadow=variables_get
-    //% group="Window"
-    //% weight=51
-    //% deprecated=true
-    public getChanges(): Change[] {
-        let changes = this._changes
-        this._changes = []
-        return changes
     }
 }
 
