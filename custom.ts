@@ -6,6 +6,9 @@
 //% groups=['Canvas', 'Window', 'Changes', 'Sprites', 'Colours', 'Pixels']
 namespace graphics {
 
+    let _windows: Window[] = []
+    let _window_events = false
+
     /**
      * Creates a canvas for use in a variable
      */
@@ -29,7 +32,10 @@ namespace graphics {
     //% blockSetVariable=window
     //% weight=52
     export function createWindow(canvas: Canvas): Window {
-        return new Window(canvas);
+        let window = canvas.createWindow();
+        window.events = _window_events
+        _windows.push(window);
+        return window;
     }
 
     /**
@@ -40,10 +46,16 @@ namespace graphics {
     //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
-        let change: Change = new Change();
-        loops.everyInterval(1000, function () {
-            if (false)
-                handler(change);
+        _window_events = true
+        for (let i = 0; i < _windows.length; i++)
+            _windows[i].events = true
+        loops.everyInterval(10, function () {
+            for (let i = 0; i < _windows.length; i++)
+                if (_windows[i].changesX > 0) {
+                    let changes = _windows[i].getChanges();
+                    for (let ch = 0; ch < changes.length; ch++)
+                        handler(changes[ch]);
+                }
         })
     }
 
@@ -84,6 +96,7 @@ class Canvas {
     _width: number = 0;
     _height: number = 0;
     _sprites: Sprite[] = [];
+    _windows: Window[]  = [];
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0));
 
     constructor(width: number, height: number) {
@@ -99,6 +112,12 @@ class Canvas {
     //% group="Canvas"
     get height() { return this._height }
 
+    public createWindow(): Window {
+        let window = new Window(this);
+        this._windows.push(window);
+        return window;
+    }
+
     /**
      * Create a sprite to be displayed on the canvas.
      * It will initially be blank.  To be displayed it
@@ -112,7 +131,7 @@ class Canvas {
     //% weight=51
     //% deprecated=true
     public createSprite(): Sprite {
-        let sprite = new Sprite(0, 0);
+        let sprite = new Sprite(this, 0, 0);
         this._sprites.push(sprite);
         return sprite;
     }
@@ -133,6 +152,12 @@ class Canvas {
         }
         return this._background_pixel
     }
+
+    public change(): void {
+        for (let i = 0; i < this._windows.length; i++) {
+            this._windows[i].change()
+        }
+    }
 }
 
 //% blockNamespace=graphics
@@ -143,10 +168,12 @@ class Sprite {
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
+    _callback: Canvas = null
 
-    constructor(x: number, y: number) {
+    constructor(callback: Canvas, x: number, y: number) {
         this._x = x
         this._y = y
+        this._callback = callback
     }
 
     //% blockCombine
@@ -211,6 +238,7 @@ class Sprite {
                 }
             }
         }
+        this._callback.change()
     }
 
     setPixel(x: number, y: number, colour: Colour): void {
@@ -227,6 +255,8 @@ class Window {
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
+    _changes: Change[] = []
+    _events: boolean = true
 
     constructor(canvas: Canvas) {
         this._canvas = canvas
@@ -241,6 +271,12 @@ class Window {
     //% blockCombine
     //% group="Window"
     get height() { return this._height }
+
+    get events() { return this._events }
+
+    set events(events: boolean) { this._events = events }
+
+    get changesX() { return this._changes.length }
 
     //% block="$this pixel x$x y$y"
     //% this.defl=window
@@ -293,6 +329,14 @@ class Window {
         return change
     }
 
+    public change(): void {
+        if (this.events) {
+            let change = this.changes()
+            if (change.pixels.length > 0)
+                this._changes.push(change)
+        }
+    }
+
     /**
      * Gets the differences between the last change request and this one.
      */
@@ -303,7 +347,9 @@ class Window {
     //% weight=51
     //% deprecated=true
     public getChanges(): Change[] {
-        return []
+        let changes = this._changes
+        this._changes = []
+        return changes
     }
 }
 

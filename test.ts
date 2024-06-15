@@ -292,4 +292,20 @@ function testSpriteMoveChanges() {
 }
 testSpriteMoveChanges()
 
+function testInitialChangesOnWindowChange() {
+    Assert.setCurrent("testInitialChangesOnWindowChange")
+    let canvas = graphics.createCanvas(40, 30)
+    let window = graphics.createWindow(canvas)
+    let sprite = canvas.createSprite()
+    let changecount = 0
+    graphics.onWindowChange(function(change: Change) {
+        changecount = change.pixels.length
+    })
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("window count", window.changesX, 1)
+    basic.pause(1)
+    Assert.assertNumber("change count", changecount, 16)
+}
+testInitialChangesOnWindowChange()
+
 Assert.result()
