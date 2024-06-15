@@ -7,7 +7,6 @@
 namespace graphics {
 
     let _windows: Window[] = []
-    let _window_events = false
 
     /**
      * Creates a canvas for use in a variable
@@ -33,7 +32,6 @@ namespace graphics {
     //% weight=52
     export function createWindow(canvas: Canvas): Window {
         let window = canvas.createWindow();
-        window.events = _window_events
         _windows.push(window);
         return window;
     }
@@ -46,9 +44,6 @@ namespace graphics {
     //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
-        _window_events = true
-        for (let i = 0; i < _windows.length; i++)
-            _windows[i].events = true
         loops.everyInterval(10, function () {
             for (let i = 0; i < _windows.length; i++) {
                 let changes = _windows[i].changes();
@@ -271,9 +266,8 @@ class Window {
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
-    _changes: Change[] = []
+    _changelist: { x: number, y: number }[] = []
     _no_change: Change = new Change()
-    _events: boolean = true
 
     constructor(canvas: Canvas) {
         this._canvas = canvas
@@ -288,10 +282,6 @@ class Window {
     //% blockCombine
     //% group="Window"
     get height() { return this._height }
-
-    get events() { return this._events }
-
-    set events(events: boolean) { this._events = events }
 
     //% block="$this pixel x$x y$y"
     //% this.defl=window
@@ -316,19 +306,11 @@ class Window {
     //% weight=51
     //% deprecated=true
     public changes(): Change {
-        if (!this.events)
-            return this.calculateAllChanges()
-        if (this._changes.length > 0)
-            return this._changes.shift()
-        return this._no_change
-    }
-
-    private calculateAllChanges() {
-        let changelist = []
-        for (let x = 0; x < this._width; x++)
-            for (let y = 0; y < this._height; y++)
-                changelist.push({'x': x, 'y': y})
-        return this.calculateChanges(changelist)
+        if (this._changelist.length == 0)
+            return this._no_change
+        let changes = this._changelist
+        this._changelist = []
+        return this.calculateChanges(changes)
     }
 
     private calculateChanges(changelist: {x: number, y: number}[]) {
@@ -361,11 +343,8 @@ class Window {
     }
 
     public change(changelist: { x: number, y: number }[]): void {
-        if (this.events) {
-            let change = this.calculateChanges(changelist)
-            if (change.pixels.length > 0)
-                this._changes.push(change)
-        }
+        for (let change of changelist)
+            this._changelist.push(change)
     }
 }
 
