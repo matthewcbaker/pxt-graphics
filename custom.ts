@@ -152,9 +152,9 @@ class Canvas {
         return this._background_pixel
     }
 
-    public change(): void {
+    public change(changelist: { x: number, y: number }[]): void {
         for (let i = 0; i < this._windows.length; i++) {
-            this._windows[i].change()
+            this._windows[i].change(changelist)
         }
     }
 }
@@ -181,7 +181,14 @@ class Sprite {
 
     //% blockCombine
     //% group="Sprites"
-    set x(x: number) { this._x = x; this._callback.change(); }
+    set x(x: number) {
+        let changelist = []
+        for (let chx = Math.min(this.x, x); chx < Math.max(this.x, x) + this.width; chx++)
+            for (let chy = this.y; chy < this.y + this.height; chy++)
+                changelist.push({ 'x': chx, 'y': chy })
+        this._x = x;
+        this._callback.change(changelist);
+    }
 
     //% blockCombine
     //% group="Sprites"
@@ -189,7 +196,14 @@ class Sprite {
 
     //% blockCombine
     //% group="Sprites"
-    set y(y: number) { this._y = y; this._callback.change(); }
+    set y(y: number) {
+        let changelist = []
+        for (let chx = this.x; chx < this.x + this.width; chx++)
+            for (let chy = Math.min(this.y, y); chy < Math.max(this.y, y) + this.height; chy++)
+                changelist.push({ 'x': chx, 'y': chy })
+        this._y = y;
+        this._callback.change(changelist);
+    }
 
     //% blockCombine
     //% group="Sprites"
@@ -223,6 +237,7 @@ class Sprite {
         this._width = image.width()
         this._height = image.height()
         this._pixels = {}
+        let changelist = []
         for (let x = 0; x < image.width(); x++) {
             for (let y = 0; y < image.height(); y++) {
                 if (image.pixel(x, y)) {
@@ -235,9 +250,11 @@ class Sprite {
                 } else {
                     this.setPixel(x, y, Colour.create(0, 0, 0))
                 }
+                changelist.push({'x': this.x + x, 'y': this.y + y})
             }
         }
-        this._callback.change()
+        // TODO: Additional changes if image is now smaller
+        this._callback.change(changelist)
     }
 
     setPixel(x: number, y: number, colour: Colour): void {
@@ -343,9 +360,9 @@ class Window {
         return change
     }
 
-    public change(): void {
+    public change(changelist: { x: number, y: number }[]): void {
         if (this.events) {
-            let change = this.calculateAllChanges()
+            let change = this.calculateChanges(changelist)
             if (change.pixels.length > 0)
                 this._changes.push(change)
         }
