@@ -313,9 +313,24 @@ class Window {
         return this.calculateChanges(changes)
     }
 
+    private removeDuplicates(changelist: {x: number, y: number}[]): {x: number, y: number}[] {
+        let newlist: {x: number, y: number}[] = []
+        let contains: { [key: number]: { [key: number]: boolean } } = {}
+        for (let ch of changelist) {
+            if (contains[ch.x] == undefined)
+                contains[ch.x] = {}
+            if (contains[ch.x][ch.y] == undefined) {
+                contains[ch.x][ch.y] = true
+                newlist.push(ch)
+            }
+        }
+        return newlist
+    }
+
     private calculateChanges(changelist: {x: number, y: number}[]) {
         let change = new Change()
         let pixel = null
+        changelist = this.removeDuplicates(changelist)
         for (let ch of changelist) {
             let x = ch.x
             let y = ch.y
