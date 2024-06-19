@@ -161,6 +161,8 @@ class Sprite {
     _width: number = 0;
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
+    _pixel_list: { x: number, y: number }[] = []
+    _pixel_list_with_offsets: { x: number, y: number }[] = []
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
     _callback: Canvas = null
 
@@ -177,12 +179,10 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set x(x: number) {
-        let changelist = []
-        for (let chx = Math.min(this.x, x); chx < Math.max(this.x, x) + this.width; chx++)
-            for (let chy = this.y; chy < this.y + this.height; chy++)
-                changelist.push({ 'x': chx, 'y': chy })
+        let old_offset_list = this._pixel_list_with_offsets
         this._x = x;
-        this._callback.change(changelist);
+        this.updatePixelListWithOffsets()
+        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
     }
 
     //% blockCombine
@@ -192,12 +192,10 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set y(y: number) {
-        let changelist = []
-        for (let chx = this.x; chx < this.x + this.width; chx++)
-            for (let chy = Math.min(this.y, y); chy < Math.max(this.y, y) + this.height; chy++)
-                changelist.push({ 'x': chx, 'y': chy })
+        let old_offset_list = this._pixel_list_with_offsets
         this._y = y;
-        this._callback.change(changelist);
+        this.updatePixelListWithOffsets()
+        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
     }
 
     //% blockCombine
@@ -232,7 +230,8 @@ class Sprite {
         this._width = image.width()
         this._height = image.height()
         this._pixels = {}
-        let changelist = []
+        this._pixel_list = []
+        let old_offset_list = this._pixel_list_with_offsets
         for (let x = 0; x < image.width(); x++) {
             for (let y = 0; y < image.height(); y++) {
                 if (image.pixel(x, y)) {
@@ -242,18 +241,25 @@ class Sprite {
                     } else {
                         this.setPixel(x, y, colour)
                     }
+                    this._pixel_list.push({'x': x, 'y': y})
                 }
-                changelist.push({'x': this.x + x, 'y': this.y + y})
             }
         }
-        // TODO: Additional changes if image is now smaller
-        this._callback.change(changelist)
+        this.updatePixelListWithOffsets()
+        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
     }
 
     setPixel(x: number, y: number, colour: Colour): void {
         if (this._pixels[x] == undefined)
             this._pixels[x] = {}
         this._pixels[x][y] = new Pixel(colour)
+    }
+    
+    private updatePixelListWithOffsets() {
+        this._pixel_list_with_offsets = []
+        for (let p of this._pixel_list) {
+            this._pixel_list_with_offsets.push({'x': this.x + p.x, 'y': this.y + p.y})
+        }
     }
 }
 
