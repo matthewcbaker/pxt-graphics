@@ -452,12 +452,19 @@ class Pixel {
 
 //% blockNamespace=graphics
 class Colour {
+    private static cache: { [key: number]: { [key: number]: { [key: number]: Colour } } } = {}
     _r: number
     _g: number
     _b: number
 
     static create(r: number, g: number, b: number): Colour {
-        return new Colour(r, g, b)
+        if (Colour.cache[r] == undefined)
+            Colour.cache[r] = {}
+        if (Colour.cache[r][g] == undefined)
+            Colour.cache[r][g] = {}
+        if (Colour.cache[r][g][b] == undefined)
+            Colour.cache[r][g][b] = new Colour(r, g, b)
+        return Colour.cache[r][g][b]
     }
 
     constructor(r: number, g: number, b: number) {
