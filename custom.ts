@@ -58,14 +58,15 @@ namespace graphics {
      * It will initially be blank.  To be displayed it
      * must have something added to it.
      */
-    //% block="add sprite to $canvas"
+    //% block="add sprite to $canvas||at x$x y$y"
     //% canvas.defl=canvas
     //% canvas.shadow=variables_get
+    //% expandableArgumentMode=toggle
     //% blockSetVariable=sprite
     //% group="Sprites"
     //% weight=51
-    export function createSprite(canvas: Canvas) {
-        return canvas.createSprite()
+    export function createSprite(canvas: Canvas, x?: number, y?: number) {
+        return canvas.createSprite(x, y)
     }
 
     //% block="red$r green$g blue$b"
@@ -124,8 +125,8 @@ class Canvas {
     //% group="Drawing"
     //% weight=51
     //% deprecated=true
-    public createSprite(): Sprite {
-        let sprite = new Sprite(this, 0, 0);
+    public createSprite(x?: number, y?: number): Sprite {
+        let sprite = new Sprite(this, x !== undefined ? x : 0, y !== undefined ? x : 0);
         this._sprites.push(sprite);
         return sprite;
     }
