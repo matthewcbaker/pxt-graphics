@@ -242,8 +242,6 @@ class Sprite {
                     } else {
                         this.setPixel(x, y, colour)
                     }
-                } else {
-                    this.setPixel(x, y, Colour.create(0, 0, 0))
                 }
                 changelist.push({'x': this.x + x, 'y': this.y + y})
             }
