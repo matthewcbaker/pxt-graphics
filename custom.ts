@@ -134,7 +134,7 @@ class Canvas {
     //% weight=51
     //% deprecated=true
     public createSprite(x?: number, y?: number): Sprite {
-        let sprite = new Sprite(this, x !== undefined ? x : 0, y !== undefined ? x : 0);
+        let sprite = new Sprite(this, x !== undefined ? x : 0, y !== undefined ? y : 0);
         this._sprites.push(sprite);
         return sprite;
     }
