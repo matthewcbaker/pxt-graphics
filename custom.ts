@@ -1,3 +1,10 @@
+enum GraphicsEventBusSource {
+    GRAPHICS_ID_CANVAS = 1234
+}
+
+enum GraphicsEventBusValue {
+    GRAPHICS_CANVAS_EVT_UPDATED = 1
+}
 
 /**
  * Graphics assistance
@@ -44,13 +51,14 @@ namespace graphics {
     //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
-        loops.everyInterval(10, function () {
+        control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, function () {
             for (let i = 0; i < _windows.length; i++) {
                 let changes = _windows[i].changes();
                 if (changes.pixels.length > 0)
                     handler(changes);
             }
-        })
+            basic.pause(10)
+        }, EventFlags.DropIfBusy)
     }
 
     /**
@@ -152,6 +160,7 @@ class Canvas {
         for (let i = 0; i < this._windows.length; i++) {
             this._windows[i].change(changelist)
         }
+        control.raiseEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED)
     }
 }
 
