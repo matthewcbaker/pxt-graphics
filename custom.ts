@@ -199,8 +199,7 @@ class Sprite {
     set x(x: number) {
         let old_offset_list = this._pixel_list_with_offsets
         this._x = x;
-        this.updatePixelListWithOffsets()
-        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
+        this.update(old_offset_list)
     }
 
     //% blockCombine
@@ -212,8 +211,7 @@ class Sprite {
     set y(y: number) {
         let old_offset_list = this._pixel_list_with_offsets
         this._y = y;
-        this.updatePixelListWithOffsets()
-        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
+        this.update(old_offset_list)
     }
 
     //% blockCombine
@@ -264,8 +262,7 @@ class Sprite {
                 }
             }
         }
-        this.updatePixelListWithOffsets()
-        this._callback.change(old_offset_list.concat(this._pixel_list_with_offsets))
+        this.update(old_offset_list)
     }
 
     setPixel(x: number, y: number, colour: Colour): void {
@@ -279,6 +276,11 @@ class Sprite {
         for (let p of this._pixel_list) {
             this._pixel_list_with_offsets.push({'x': this.x + p.x, 'y': this.y + p.y})
         }
+    }
+
+    private update(old_offset_list: { x: number, y: number }[]) {
+        this.updatePixelListWithOffsets()
+        this._callback.change(this._pixel_list_with_offsets.concat(old_offset_list))
     }
 }
 
