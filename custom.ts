@@ -10,11 +10,8 @@ enum GraphicsEventBusValue {
  * Graphics assistance
  */
 //% weight=10 color="#de26a7" icon="\uf302"
-//% groups=['Canvas', 'Window', 'Changes', 'Sprites', 'Colours', 'Pixels']
+//% groups=['Canvas', 'Sprites', 'Colours']
 namespace graphics {
-
-    let _windows: Window[] = []
-
     /**
      * Creates a canvas for use in a variable
      */
@@ -26,39 +23,6 @@ namespace graphics {
     //% weight=52
     export function createCanvas(width: number, height: number): Canvas {
         return new Canvas(width, height);
-    }
-
-    /**
-     * Creates a window to view a section of canvas.
-     */
-    //% block="create window to view $canvas"
-    //% canvas.defl=canvas
-    //% canvas.shadow=variables_get
-    //% group="Window"
-    //% blockSetVariable=window
-    //% weight=52
-    export function createWindow(canvas: Canvas): Window {
-        let window = canvas.createWindow();
-        _windows.push(window);
-        return window;
-    }
-
-    /**
-     * Called whenever there are changes available
-     */
-    //% block="on window $change"
-    //% group="Changes"
-    //% weight=60
-    //% draggableParameters="reporter"
-    export function onWindowChange(handler: (change: Change) => void) {
-        control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, function () {
-            for (let i = 0; i < _windows.length; i++) {
-                let changes = _windows[i].changes();
-                if (changes.pixels.length > 0)
-                    handler(changes);
-            }
-            basic.pause(10)
-        }, EventFlags.DropIfBusy)
     }
 
     /**
@@ -91,6 +55,49 @@ namespace graphics {
     //% colour.shadow="colorNumberPicker"
     export function createColourHex(colour: number) {
         return Colour.create(5, 5, 5)
+    }
+}
+
+/**
+ * Display for Graphics
+ */
+//% weight=9 color="#de26a7" icon="\uf108"
+//% groups=['Window', 'Changes', 'Pixels']
+namespace display {
+
+    let _windows: Window[] = []
+
+    /**
+     * Creates a window to view a section of canvas.
+     */
+    //% block="create window to view $canvas"
+    //% canvas.defl=canvas
+    //% canvas.shadow=variables_get
+    //% group="Window"
+    //% blockSetVariable=window
+    //% weight=52
+    export function createWindow(canvas: Canvas): Window {
+        let window = canvas.createWindow();
+        _windows.push(window);
+        return window;
+    }
+
+    /**
+     * Called whenever there are changes available
+     */
+    //% block="on window $change"
+    //% group="Changes"
+    //% weight=60
+    //% draggableParameters="reporter"
+    export function onWindowChange(handler: (change: Change) => void) {
+        control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, function () {
+            for (let i = 0; i < _windows.length; i++) {
+                let changes = _windows[i].changes();
+                if (changes.pixels.length > 0)
+                    handler(changes);
+            }
+            basic.pause(10)
+        }, EventFlags.DropIfBusy)
     }
 }
 
@@ -140,6 +147,7 @@ class Canvas {
     }
 
     //% block="$this pixel x$x y$y"
+    //% blockNamespace=display
     //% this.defl=canvas
     //% this.shadow=variables_get
     //% group="Pixels"
@@ -217,6 +225,7 @@ class Sprite {
     get height() { return this._height }
 
     //% block="$this pixel x$x y$y"
+    //% blockNamespace=display
     //% this.defl=sprite
     //% this.shadow=variables_get
     //% group="Pixels"
@@ -273,7 +282,7 @@ class Sprite {
     }
 }
 
-//% blockNamespace=graphics
+//% blockNamespace=display
 class Window {
     _canvas: Canvas
     _width: number = 0;
@@ -377,7 +386,7 @@ class Window {
     }
 }
 
-//% blockNamespace=graphics
+//% blockNamespace=display
 class Change {
     _pixels: PixelChange[] = [];
 
@@ -393,7 +402,7 @@ class Change {
     }
 }
 
-//% blockNamespace=graphics
+//% blockNamespace=display
 class PixelChange {
     _x: number
     _y: number
@@ -432,7 +441,7 @@ class PixelChange {
     get colour() { return this._pixel.colour }
 }
 
-//% blockNamespace=graphics
+//% blockNamespace=display
 class Pixel {
     //_x: number
     //_y: number

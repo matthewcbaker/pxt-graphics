@@ -123,7 +123,7 @@ testSpriteSetImageCanvasImpact()
 function testInitialWindowFullCanvas() {
     Assert.setCurrent("testInitialWindowFullCanvas")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     Assert.assertNumber("width", window.width, 40)
     Assert.assertNumber("height", window.height, 30)
 }
@@ -132,7 +132,7 @@ testInitialWindowFullCanvas()
 function testSpriteSetImageNoWindowImpact() {
     Assert.setCurrent("testSpriteSetImageNoWindowImpact")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("window blank 0,1", window.pixel(0, 1).colour.brightness, 0)
@@ -147,7 +147,7 @@ testSpriteSetImageNoWindowImpact()
 function testInitialChangesWhenBlank() {
     Assert.setCurrent("testInitialChangesWhenBlank")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     Assert.assertNumber("no changes", window.changes().pixels.length, 0)
 }
 testInitialChangesWhenBlank()
@@ -155,7 +155,7 @@ testInitialChangesWhenBlank()
 function testInitialChangesWhenBlankSprite() {
     Assert.setCurrent("testInitialChangesWhenBlankSprite")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("no changes", window.changes().pixels.length, 0)
 }
@@ -164,7 +164,7 @@ testInitialChangesWhenBlankSprite()
 function testInitialChangesWithRegularSprite() {
     Assert.setCurrent("testInitialChangesWithRegularSprite")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("change count", window.changes().pixels.length, 16)
@@ -174,7 +174,7 @@ testInitialChangesWithRegularSprite()
 function testSubsequentChangesWithRegularSprite() {
     Assert.setCurrent("testSubsequentChangesWithRegularSprite")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     window.changes()
@@ -189,7 +189,7 @@ testSubsequentChangesWithRegularSprite()
 function testChangeContent() {
     Assert.setCurrent("testChangeContent")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     let pixels = window.changes().pixels
@@ -204,7 +204,7 @@ testChangeContent()
 function testSpriteSetImageWindowImpactAfterChange() {
     Assert.setCurrent("testSpriteSetImageWindowImpactAfterChange")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("window blank 0,1", window.pixel(0, 1).colour.brightness, 0)
@@ -259,7 +259,7 @@ testSpriteMoveX()
 function testSpriteMoveWindow() {
     Assert.setCurrent("testSpriteMoveWindow")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     sprite.x = 1
@@ -277,7 +277,7 @@ testSpriteMoveWindow()
 function testSpriteMoveChanges() {
     Assert.setCurrent("testSpriteMoveChanges")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("change count before", window.changes().pixels.length, 16)
@@ -295,10 +295,10 @@ testSpriteMoveChanges()
 function testInitialChangesOnWindowChange() {
     Assert.setCurrent("testInitialChangesOnWindowChange")
     let canvas = graphics.createCanvas(40, 30)
-    let window = graphics.createWindow(canvas)
+    let window = display.createWindow(canvas)
     let sprite = canvas.createSprite()
     let changecount = 0
-    graphics.onWindowChange(function(change: Change) {
+    display.onWindowChange(function(change: Change) {
         changecount = change.pixels.length
     })
     sprite.setImage(images.iconImage(IconNames.Heart))
