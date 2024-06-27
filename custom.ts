@@ -96,8 +96,7 @@ namespace display {
                 if (changes.pixels.length > 0)
                     handler(changes);
             }
-            basic.pause(10)
-        }, EventFlags.DropIfBusy)
+        })
     }
 }
 
@@ -169,6 +168,7 @@ class Canvas {
             this._windows[i].change(changelist)
         }
         control.raiseEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED)
+        basic.pause(10)
     }
 }
 
