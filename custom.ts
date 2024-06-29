@@ -179,15 +179,16 @@ class Sprite {
     _width: number = 0;
     _height: number = 0;
     _pixels: { [key: number]: { [key: number]: Pixel } } = {};
+    private constraint: { [key: string]: number } = undefined
     _pixel_list: { x: number, y: number }[] = []
     _pixel_list_with_offsets: { x: number, y: number }[] = []
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
-    _callback: Canvas = null
+    private canvas: Canvas = null
 
-    constructor(callback: Canvas, x: number, y: number) {
+    constructor(canvas: Canvas, x: number, y: number) {
         this._x = x
         this._y = y
-        this._callback = callback
+        this.canvas = canvas
     }
 
     //% blockCombine
@@ -197,6 +198,8 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set x(x: number) {
+        if (this.constraint && (x < this.constraint.x || x >= this.constraint.x + this.constraint.width - this.width))
+            return
         let old_offset_list = this._pixel_list_with_offsets
         this._x = x;
         this.update(old_offset_list)
@@ -209,6 +212,8 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set y(y: number) {
+        if (this.constraint && (y < this.constraint.y || y >= this.constraint.y + this.constraint.height - this.height))
+            return
         let old_offset_list = this._pixel_list_with_offsets
         this._y = y;
         this.update(old_offset_list)
@@ -280,7 +285,56 @@ class Sprite {
 
     private update(old_offset_list: { x: number, y: number }[]) {
         this.updatePixelListWithOffsets()
-        this._callback.change(this._pixel_list_with_offsets.concat(old_offset_list))
+        this.canvas.change(this._pixel_list_with_offsets.concat(old_offset_list))
+    }
+
+    /**
+     * Stop this sprite going outside the given area.
+     */
+    //% block="constrain $this to canvas"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% group="Sprites"
+    //% weight=49
+    public constrainToCanvas(): void {
+        this.constrainTo(0, 0, this.canvas.width, this.canvas.height)
+    }
+
+    /**
+     * Stop this sprite going outside the given area.
+     */
+    //% block="constrain $this to area x$x y$y width$width height$height"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% width.defl=40
+    //% height.defl=30
+    //% inlineInputMode=inline
+    //% group="Sprites"
+    //% weight=48
+    public constrainTo(x: number, y: number, width: number, height: number): void {
+        if (width < 1 || height < 1)
+            return
+        this.constraint = {x: x, y: y, width: width, height: height}
+        if (this.x < x)
+            this.x = x
+        else if (this.x >= x + width - this.width)
+            this.x = x + width - this.width - 1
+        if (this.y < y)
+            this.y = y
+        else if (this.y >= y + height - this.height)
+            this.y = y + height - this.height - 1
+    }
+
+    /**
+     * Do not constain sprite
+     */
+    //% block="unconstrain $this"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% group="Sprites"
+    //% weight=47
+    public unconstrain(): void {
+        this.constraint = undefined
     }
 }
 
