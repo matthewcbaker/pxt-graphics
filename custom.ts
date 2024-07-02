@@ -12,6 +12,9 @@ enum GraphicsEventBusValue {
 //% weight=10 color="#de26a7" icon="\uf302"
 //% groups=['Canvas', 'Sprites', 'Colours']
 namespace graphics {
+
+    export let processingTimer: Timer = new Timer()
+
     /**
      * Creates a canvas for use in a variable
      */
@@ -56,6 +59,15 @@ namespace graphics {
     export function createColourHex(colour: number) {
         return Colour.create(5, 5, 5)
     }
+
+    /**
+     * Find out how much time has been spent processing graphics activity
+     */
+    //% block="processing time spent (ms)"
+    //% advanced=true
+    export function processingTime() {
+        return processingTimer.milliseconds
+    }
 }
 
 /**
@@ -66,6 +78,8 @@ namespace graphics {
 namespace display {
 
     let _windows: Window[] = []
+    let processingTimer: Timer = new Timer()
+    let handlerTimer: Timer = new Timer()
 
     /**
      * Creates a window to view a section of canvas.
@@ -92,11 +106,35 @@ namespace display {
     export function onWindowChange(handler: (change: Change) => void) {
         control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, function () {
             for (let i = 0; i < _windows.length; i++) {
+                processingTimer.start()
                 let changes = _windows[i].changes();
-                if (changes.pixels.length > 0)
+                processingTimer.stop()
+                if (changes.pixels.length > 0) {
+                    handlerTimer.start()
                     handler(changes);
+                    handlerTimer.stop()
+                }
             }
         })
+    }
+
+    /**
+     * Find out how much time has been spent processing display activity
+     */
+    //% block="processing time spent (ms)"
+    //% advanced=true
+    export function processingTime() {
+        return processingTimer.milliseconds
+    }
+
+    /**
+     * Find out how much time has been spent processing handler activity
+     */
+    //% block="handler time spent (ms)"
+    //% weight=20
+    //% advanced=true
+    export function handlerTime() {
+        return handlerTimer.milliseconds
     }
 }
 
@@ -168,7 +206,9 @@ class Canvas {
             this._windows[i].change(changelist)
         }
         control.raiseEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED)
+        graphics.processingTimer.stop()
         basic.pause(10)
+        graphics.processingTimer.start()
     }
 }
 
@@ -200,9 +240,11 @@ class Sprite {
     set x(x: number) {
         if (this.constraint && (x < this.constraint.x || x >= this.constraint.x + this.constraint.width - this.width))
             return
+        graphics.processingTimer.start()
         let old_offset_list = this._pixel_list_with_offsets
         this._x = x;
         this.update(old_offset_list)
+        graphics.processingTimer.stop()
     }
 
     //% blockCombine
@@ -214,9 +256,11 @@ class Sprite {
     set y(y: number) {
         if (this.constraint && (y < this.constraint.y || y >= this.constraint.y + this.constraint.height - this.height))
             return
+        graphics.processingTimer.start()
         let old_offset_list = this._pixel_list_with_offsets
         this._y = y;
         this.update(old_offset_list)
+        graphics.processingTimer.stop()
     }
 
     //% blockCombine

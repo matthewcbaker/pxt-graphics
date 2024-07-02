@@ -5,7 +5,8 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "microphone": "*"
+        "microphone": "*",
+        "pxt-timers": "github:matthewcbaker/pxt-timers#master"
     },
     "files": [
         "README.md",
