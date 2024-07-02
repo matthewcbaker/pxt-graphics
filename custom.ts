@@ -63,7 +63,7 @@ namespace graphics {
     /**
      * Find out how much time has been spent processing graphics activity
      */
-    //% block="processing time spent (ms)"
+    //% block="graphics processing time (ms)"
     //% advanced=true
     export function processingTime() {
         return processingTimer.milliseconds
@@ -121,7 +121,7 @@ namespace display {
     /**
      * Find out how much time has been spent processing display activity
      */
-    //% block="processing time spent (ms)"
+    //% block="display processing time (ms)"
     //% advanced=true
     export function processingTime() {
         return processingTimer.milliseconds
@@ -130,7 +130,7 @@ namespace display {
     /**
      * Find out how much time has been spent processing handler activity
      */
-    //% block="handler time spent (ms)"
+    //% block="callback handler time (ms)"
     //% weight=20
     //% advanced=true
     export function handlerTime() {
