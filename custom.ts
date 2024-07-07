@@ -261,8 +261,8 @@ class Sprite {
     //% weight=50
     public setPosition(x: number, y: number) {
         if (this.constraint) {
-            x = Math.constrain(x, this.constraint.x, this.constraint.x + this.constraint.width - 1)
-            y = Math.constrain(y, this.constraint.y, this.constraint.y + this.constraint.height - 1)
+            x = Math.constrain(x, this.constraint.x, this.constraint.x + this.constraint.width - this.width)
+            y = Math.constrain(y, this.constraint.y, this.constraint.y + this.constraint.height - this.height)
         }
         if (this._x == x && this._y == y)
             return
