@@ -351,14 +351,9 @@ class Sprite {
     }
 
     private symmetricDifference(a: { x: number, y: number }[], b: { x: number, y: number }[]): { x: number, y: number }[] {
-        let non_intersecting: { x: number, y: number }[] = []
-        for (let item of a)
-            if (b.indexOf(item))
-                non_intersecting.push(item)
-        for (let item of b)
-            if (a.indexOf(item))
-                non_intersecting.push(item)
-        return non_intersecting
+        const a_not_b = a.filter((element) => b.indexOf(element) == -1)
+        const b_not_a = b.filter((element) => a.indexOf(element) == -1)
+        return a_not_b.concat(b_not_a)
     }
 
     private update(old_offset_list: { x: number, y: number }[]) {
