@@ -307,4 +307,39 @@ function testInitialChangesOnWindowChange() {
 }
 testInitialChangesOnWindowChange()
 
+function testConstrainToCanvasOff() {
+    Assert.setCurrent("testConstrainToCanvasOff")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite(1, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("canvas pixel 0,2", canvas.pixel(0, 2).brightness, 0)
+    Assert.assertNumber("canvas pixel 1,2", canvas.pixel(1, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 5,2", canvas.pixel(5, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 6,2", canvas.pixel(6, 2).brightness, 0)
+    sprite.x = -1
+    Assert.assertNumber("canvas pixel 0,2", canvas.pixel(0, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 1,2", canvas.pixel(1, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 3,2", canvas.pixel(3, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 4,2", canvas.pixel(4, 2).brightness, 0)
+}
+testConstrainToCanvasOff()
+
+function testConstrainToCanvasOn() {
+    Assert.setCurrent("testConstrainToCanvasOn")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite(1, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("canvas pixel 0,2", canvas.pixel(0, 2).brightness, 0)
+    Assert.assertNumber("canvas pixel 1,2", canvas.pixel(1, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 5,2", canvas.pixel(5, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 6,2", canvas.pixel(6, 2).brightness, 0)
+    sprite.constrainToCanvas()
+    sprite.x = -1
+    Assert.assertNumber("canvas pixel 0,2", canvas.pixel(0, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 1,2", canvas.pixel(1, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 4,2", canvas.pixel(4, 2).brightness, 255)
+    Assert.assertNumber("canvas pixel 5,2", canvas.pixel(5, 2).brightness, 0)
+}
+testConstrainToCanvasOn()
+
 Assert.result()

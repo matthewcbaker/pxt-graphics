@@ -260,9 +260,11 @@ class Sprite {
     //% group="Sprites"
     //% weight=50
     public setPosition(x: number, y: number) {
-        if (this.constraint &&
-            (x < this.constraint.x || x >= this.constraint.x + this.constraint.width - this.width) &&
-            (y < this.constraint.y || y >= this.constraint.y + this.constraint.height - this.height))
+        if (this.constraint) {
+            x = Math.constrain(x, this.constraint.x, this.constraint.x + this.constraint.width - 1)
+            y = Math.constrain(y, this.constraint.y, this.constraint.y + this.constraint.height - 1)
+        }
+        if (this._x == x && this._y == y)
             return
         graphics.processingTimer.start()
         let old_offset_list = this._pixel_list_with_offsets
