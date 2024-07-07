@@ -350,9 +350,20 @@ class Sprite {
         }
     }
 
+    private symmetricDifference(a: { x: number, y: number }[], b: { x: number, y: number }[]): { x: number, y: number }[] {
+        let non_intersecting: { x: number, y: number }[] = []
+        for (let item of a)
+            if (b.indexOf(item))
+                non_intersecting.push(item)
+        for (let item of b)
+            if (a.indexOf(item))
+                non_intersecting.push(item)
+        return non_intersecting
+    }
+
     private update(old_offset_list: { x: number, y: number }[]) {
         this.updatePixelListWithOffsets()
-        this.canvas.change(this._pixel_list_with_offsets.concat(old_offset_list))
+        this.canvas.change(this.symmetricDifference(old_offset_list, this._pixel_list_with_offsets))
     }
 
     /**
