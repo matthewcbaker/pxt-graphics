@@ -238,13 +238,7 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set x(x: number) {
-        if (this.constraint && (x < this.constraint.x || x >= this.constraint.x + this.constraint.width - this.width))
-            return
-        graphics.processingTimer.start()
-        let old_offset_list = this._pixel_list_with_offsets
-        this._x = x;
-        this.update(old_offset_list)
-        graphics.processingTimer.stop()
+        this.setPosition(x, this.y)
     }
 
     //% blockCombine
@@ -254,13 +248,40 @@ class Sprite {
     //% blockCombine
     //% group="Sprites"
     set y(y: number) {
-        if (this.constraint && (y < this.constraint.y || y >= this.constraint.y + this.constraint.height - this.height))
+        this.setPosition(this.x, y)
+    }
+
+    /**
+     * Set the X and Y positions at the same time.
+     */
+    //% block="set $this position to x$x y$y"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% group="Sprites"
+    //% weight=50
+    public setPosition(x: number, y: number) {
+        if (this.constraint &&
+            (x < this.constraint.x || x >= this.constraint.x + this.constraint.width - this.width) &&
+            (y < this.constraint.y || y >= this.constraint.y + this.constraint.height - this.height))
             return
         graphics.processingTimer.start()
         let old_offset_list = this._pixel_list_with_offsets
+        this._x = x;
         this._y = y;
         this.update(old_offset_list)
         graphics.processingTimer.stop()
+    }
+
+    /**
+     * Change the X and Y positions at the same time.
+     */
+    //% block="change $this position by x$x y$y"
+    //% this.defl=sprite
+    //% this.shadow=variables_get
+    //% group="Sprites"
+    //% weight=50
+    public changePosition(x: number, y: number) {
+        this.setPosition(this.x + x, this.y + y)
     }
 
     //% blockCombine
