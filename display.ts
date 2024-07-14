@@ -2,7 +2,7 @@
  * Display for Graphics
  */
 //% weight=8 color="#de26a7" icon="\uf108"
-//% groups=['Window', 'Changes', 'Pixels']
+//% groups=['Window', 'Changes', 'Pixels', 'Performance']
 namespace display {
 
     let _windows: Window[] = []
@@ -50,7 +50,8 @@ namespace display {
      * Find out how much time has been spent processing display activity
      */
     //% block="display processing time (ms)"
-    //% advanced=true
+    //% blockNamespace=graphics
+    //% group="Performance"
     export function processingTime() {
         return processingTimer.milliseconds
     }
@@ -59,8 +60,9 @@ namespace display {
      * Find out how much time has been spent processing handler activity
      */
     //% block="callback handler time (ms)"
+    //% blockNamespace=graphics
+    //% group="Performance"
     //% weight=20
-    //% advanced=true
     export function handlerTime() {
         return handlerTimer.milliseconds
     }
@@ -93,6 +95,7 @@ class Window {
     //% block="$this pixel x$x y$y"
     //% this.defl=window
     //% this.shadow=variables_get
+    //% blockNamespace=graphics
     //% group="Pixels"
     public pixel(x: number, y: number) {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
@@ -225,7 +228,7 @@ class PixelChange {
     get colour() { return this._pixel.colour }
 }
 
-//% blockNamespace=display
+//% blockNamespace=graphics
 class Pixel {
     //_x: number
     //_y: number

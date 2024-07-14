@@ -12,10 +12,10 @@
         "README.md",
         "main.blocks",
         "main.ts",
-        "custom.ts",
         "sprites.ts",
         "display.ts",
-        "canvas.ts"
+        "canvas.ts",
+        "graphics.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -29,9 +29,9 @@ namespace sprites {
     //% canvas.shadow=variables_get
     //% expandableArgumentMode=toggle
     //% blockSetVariable=sprite
+    //% blockNamespace=graphics
     //% group="Sprites"
     //% weight=51
-    //% advanced=true
     export function createSpriteOnCanvas(canvas: Canvas, x?: number, y?: number) {
         return canvas.createSprite(x, y)
     }
@@ -120,7 +120,7 @@ class Sprite {
     get height() { return this._height }
 
     //% block="$this pixel x$x y$y"
-    //% blockNamespace=display
+    //% blockNamespace=graphics
     //% this.defl=sprite
     //% this.shadow=variables_get
     //% group="Pixels"

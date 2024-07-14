@@ -6,7 +6,33 @@ enum GraphicsEventBusValue {
     GRAPHICS_CANVAS_EVT_UPDATED = 1
 }
 
-//% blockNamespace=graphics
+/**
+ * Graphics assistance
+ */
+//% weight=10 color="#de26a7" icon="\uf302"
+//% groups=['Canvas']
+namespace canvas {
+    /**
+     * Canvas width
+     */
+    //% block="canvas width"
+    //% weight=51
+    //% group="Canvas"
+    export function width(): number {
+        return Canvas.canvas().width
+    }
+
+    /**
+     * Canvas width
+     */
+    //% block="canvas height"
+    //% group="Canvas"
+    export function height(): number {
+        return Canvas.canvas().height
+    }
+}
+
+//% blockNamespace=canvas
 class Canvas {
     _width: number = 0;
     _height: number = 0;
@@ -23,12 +49,19 @@ class Canvas {
         this._height = Math.constrain(height, 1, 768)
     }
 
-    //% blockCombine
+    //% block="$this width"
+    //% this.defl=canvas
+    //% this.shadow=variables_get
+    //% blockNamespace=graphics
     //% group="Canvas"
     get width() { return this._width }
 
-    //% blockCombine
+    //% block="$this height"
+    //% this.defl=canvas
+    //% this.shadow=variables_get
+    //% blockNamespace=graphics
     //% group="Canvas"
+    //% weight=49
     get height() { return this._height }
 
     public createWindow(): Window {
@@ -56,10 +89,11 @@ class Canvas {
     }
 
     //% block="$this pixel x$x y$y"
-    //% blockNamespace=display
+    //% blockNamespace=graphics
     //% this.defl=canvas
     //% this.shadow=variables_get
     //% group="Pixels"
+    //% weight=49
     public pixel(x: number, y: number): Pixel {
         if (x < 0 || x >= this._width || y < 0 || y >= this._height)
             return this._background_pixel;
