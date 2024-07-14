@@ -40,6 +40,7 @@ namespace graphics {
     //% blockSetVariable=sprite
     //% group="Sprites"
     //% weight=51
+    //% deprecated=true
     export function createSprite(canvas: Canvas, x?: number, y?: number) {
         return canvas.createSprite(x, y)
     }
@@ -49,6 +50,7 @@ namespace graphics {
     //% r.min=0 r.max=255 r.defl=255
     //% g.min=0 g.max=255 g.defl=255
     //% b.min=0 b.max=255 b.defl=255
+    //% deprecated=true
     export function createColourRGB(r: number, g: number, b: number) {
         return Colour.create(r, g, b)
     }
@@ -56,6 +58,7 @@ namespace graphics {
     //% block="$colour"
     //% group="Colours"
     //% colour.shadow="colorNumberPicker"
+    //% deprecated=true
     export function createColourHex(colour: number) {
         return Colour.create(5, 5, 5)
     }
@@ -71,9 +74,48 @@ namespace graphics {
 }
 
 /**
+ * Sprites
+ */
+//% weight=9 color="#de26a7" icon="\uf2bd"
+//% groups=['Create', 'Sprites', 'Interaction', 'Colours']
+namespace sprites {
+    /**
+     * Create a sprite to be displayed on the canvas.
+     * It will initially be blank.  To be displayed it
+     * must have something added to it.
+     */
+    //% block="add sprite at x$x y$y"
+    //% canvas.defl=canvas
+    //% canvas.shadow=variables_get
+    //% blockSetVariable=sprite
+    //% group="Create"
+    //% weight=51
+    export function createSprite(x: number, y: number) {
+        return Canvas.canvas().createSprite(x, y)
+    }
+    
+    /**
+     * Create a sprite to be displayed on the canvas.
+     * It will initially be blank.  To be displayed it
+     * must have something added to it.
+     */
+    //% block="add sprite to $canvas||at x$x y$y"
+    //% canvas.defl=canvas
+    //% canvas.shadow=variables_get
+    //% expandableArgumentMode=toggle
+    //% blockSetVariable=sprite
+    //% group="Sprites"
+    //% weight=51
+    //% advanced=true
+    export function createSpriteOnCanvas(canvas: Canvas, x?: number, y?: number) {
+        return canvas.createSprite(x, y)
+    }
+}
+
+/**
  * Display for Graphics
  */
-//% weight=9 color="#de26a7" icon="\uf108"
+//% weight=8 color="#de26a7" icon="\uf108"
 //% groups=['Window', 'Changes', 'Pixels']
 namespace display {
 
@@ -146,6 +188,10 @@ class Canvas {
     _windows: Window[]  = [];
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0));
 
+    static canvas(): Canvas {
+        return new Canvas(160, 128)
+    }
+
     constructor(width: number, height: number) {
         this._width = Math.constrain(width, 1, 1024)
         this._height = Math.constrain(height, 1, 768)
@@ -212,7 +258,7 @@ class Canvas {
     }
 }
 
-//% blockNamespace=graphics
+//% blockNamespace=sprites
 class Sprite {
     _x: number = 0
     _y: number = 0
@@ -408,6 +454,29 @@ class Sprite {
     //% weight=47
     public unconstrain(): void {
         this.constraint = undefined
+    }
+}
+
+/**
+ * Sprites
+ */
+namespace sprites {
+    /**
+     * Called whenever sprites are on top of each other
+     */
+    //% block="on sprite overlaps othersprite (B)"
+    //% group="Interaction"
+    //% draggableParameters="reporter"
+    export function onSpritesOverlap(handler: () => void) {
+    }
+
+    //% block="red$r green$g blue$b"
+    //% group="Colours"
+    //% r.min=0 r.max=255 r.defl=255
+    //% g.min=0 g.max=255 g.defl=255
+    //% b.min=0 b.max=255 b.defl=255
+    export function createColourRGB(r: number, g: number, b: number) {
+        return Colour.create(r, g, b)
     }
 }
 
