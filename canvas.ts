@@ -34,6 +34,7 @@ namespace canvas {
 
 //% blockNamespace=canvas
 class Canvas {
+    private static globalCanvas: Canvas = undefined
     _width: number = 0;
     _height: number = 0;
     _sprites: Sprite[] = [];
@@ -41,7 +42,9 @@ class Canvas {
     _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0));
 
     static canvas(): Canvas {
-        return new Canvas(160, 128)
+        if (Canvas.globalCanvas === undefined)
+            Canvas.globalCanvas = new Canvas(160, 128)
+        return Canvas.globalCanvas
     }
 
     constructor(width: number, height: number) {
