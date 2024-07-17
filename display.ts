@@ -10,12 +10,32 @@ namespace display {
     let handlerTimer: Timer = new Timer()
 
     /**
+     * Window width
+     */
+    //% block="window width"
+    //% weight=51
+    //% group="Window"
+    export function width(): number {
+        return Window.window().width
+    }
+
+    /**
+     * Window height
+     */
+    //% block="window height"
+    //% group="Window"
+    export function height(): number {
+        return Window.window().height
+    }
+
+    /**
      * Creates a window to view a section of canvas.
      */
     //% block="create window to view $canvas"
     //% canvas.defl=canvas
     //% canvas.shadow=variables_get
-    //% group="Window"
+    //% blockNamespace=graphics
+    //% group="Display"
     //% blockSetVariable=window
     //% weight=52
     export function createWindow(canvas: Canvas): Window {
@@ -70,6 +90,7 @@ namespace display {
 
 //% blockNamespace=display
 class Window {
+    private static globalWindow: Window = undefined
     _canvas: Canvas
     _width: number = 0;
     _height: number = 0;
@@ -78,18 +99,34 @@ class Window {
     _changelist: { x: number, y: number }[] = []
     _no_change: Change = new Change()
 
+    //% block="global window"
+    //% blockNamespace=graphics
+    //% group="Display"
+    //% weight=80
+    static window(): Window {
+        if (Window.globalWindow === undefined)
+            Window.globalWindow = display.createWindow(Canvas.canvas())
+        return Window.globalWindow
+    }
+
     constructor(canvas: Canvas) {
         this._canvas = canvas
         this._width = canvas._width
         this._height = canvas._height
     }
 
-    //% blockCombine
-    //% group="Window"
+    //% block="$this width"
+    //% this.defl=window
+    //% this.shadow=variables_get
+    //% blockNamespace=graphics
+    //% group="Display"
     get width() { return this._width }
 
-    //% blockCombine
-    //% group="Window"
+    //% block="$this height"
+    //% this.defl=window
+    //% this.shadow=variables_get
+    //% blockNamespace=graphics
+    //% group="Display"
     get height() { return this._height }
 
     //% block="$this pixel x$x y$y"

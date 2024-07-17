@@ -23,7 +23,7 @@ namespace canvas {
     }
 
     /**
-     * Canvas width
+     * Canvas height
      */
     //% block="canvas height"
     //% group="Canvas"
