@@ -93,6 +93,9 @@ class Canvas {
     public createWindow(): Window {
         let window = new Window(this);
         this._windows.push(window);
+        for (let i = 0; i < this._sprites.length; i++) {
+            window.change(this._sprites[i].pixelList(true))
+        }
         return window;
     }
 

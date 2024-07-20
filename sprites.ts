@@ -132,6 +132,13 @@ class Sprite {
         return this._pixels[x][y]
     }
 
+    public pixelList(offsets: boolean): { x: number, y: number }[] {
+        if (offsets)
+            return this._pixel_list_with_offsets
+        else
+            return this._pixel_list
+    }
+
     /**
      * Replace the current sprite graphics with a basic image.
      */
