@@ -23,41 +23,6 @@ namespace graphics {
     }
 
     /**
-     * Create a sprite to be displayed on the canvas.
-     * It will initially be blank.  To be displayed it
-     * must have something added to it.
-     */
-    //% block="add sprite to $canvas||at x$x y$y"
-    //% canvas.defl=canvas
-    //% canvas.shadow=variables_get
-    //% expandableArgumentMode=toggle
-    //% blockSetVariable=sprite
-    //% group="Sprites"
-    //% weight=51
-    //% deprecated=true
-    export function createSprite(canvas: Canvas, x?: number, y?: number) {
-        return canvas.createSprite(x, y)
-    }
-
-    //% block="red$r green$g blue$b"
-    //% group="Colours"
-    //% r.min=0 r.max=255 r.defl=255
-    //% g.min=0 g.max=255 g.defl=255
-    //% b.min=0 b.max=255 b.defl=255
-    //% deprecated=true
-    export function createColourRGB(r: number, g: number, b: number) {
-        return Colour.create(r, g, b)
-    }
-
-    //% block="$colour"
-    //% group="Colours"
-    //% colour.shadow="colorNumberPicker"
-    //% deprecated=true
-    export function createColourHex(colour: number) {
-        return Colour.create(5, 5, 5)
-    }
-
-    /**
      * Find out how much time has been spent processing graphics activity
      */
     //% block="graphics processing time (ms)"

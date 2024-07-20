@@ -24,15 +24,14 @@ namespace sprites {
      * It will initially be blank.  To be displayed it
      * must have something added to it.
      */
-    //% block="add sprite to $canvas||at x$x y$y"
+    //% block="add sprite to $canvas at x$x y$y"
     //% canvas.defl=canvas
     //% canvas.shadow=variables_get
-    //% expandableArgumentMode=toggle
     //% blockSetVariable=sprite
     //% blockNamespace=graphics
     //% group="Sprites"
     //% weight=51
-    export function createSpriteOnCanvas(canvas: Canvas, x?: number, y?: number) {
+    export function createSpriteOnCanvas(canvas: Canvas, x: number, y: number) {
         return canvas.createSprite(x, y)
     }
 }

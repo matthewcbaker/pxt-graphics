@@ -99,18 +99,6 @@ class Canvas {
         return window;
     }
 
-    /**
-     * Create a sprite to be displayed on the canvas.
-     * It will initially be blank.  To be displayed it
-     * must have something added to it.
-     */
-    //% block="add sprite to $this"
-    //% this.defl=canvas
-    //% this.shadow=variables_get
-    //% blockSetVariable=sprite
-    //% group="Drawing"
-    //% weight=51
-    //% deprecated=true
     public createSprite(x?: number, y?: number): Sprite {
         let sprite = new Sprite(this, x !== undefined ? x : 0, y !== undefined ? y : 0);
         this._sprites.push(sprite);

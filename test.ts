@@ -97,7 +97,7 @@ function testSpriteSetImageWithColour() {
     Assert.setCurrent("testSpriteSetImageWithColour")
     let canvas = graphics.createCanvas(40, 30)
     let sprite = canvas.createSprite()
-    sprite.setImage(images.iconImage(IconNames.Heart), graphics.createColourRGB(200, 100, 50))
+    sprite.setImage(images.iconImage(IconNames.Heart), sprites.createColourRGB(200, 100, 50))
     Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
     Assert.assertNumber("sprite pixel 0,0,g", sprite.pixel(0, 0).colour.green, 0)
     Assert.assertNumber("sprite pixel 0,0,b", sprite.pixel(0, 0).colour.blue, 0)
