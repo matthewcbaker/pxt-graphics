@@ -17,6 +17,7 @@ namespace graphics {
     //% height.min=1 height.max=768 height.defl=30
     //% blockSetVariable=canvas
     //% weight=52
+    //% deprecated=true
     export function createCanvas(width: number, height: number): Canvas {
         return new Canvas(width, height);
     }
@@ -68,6 +69,6 @@ namespace graphics {
 
     export function forceReset(): void {
         canvas.forceReset()
-        display.forceReset()
+        windows.forceReset()
     }
 }

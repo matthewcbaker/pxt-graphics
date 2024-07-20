@@ -13,6 +13,20 @@ enum GraphicsEventBusValue {
 //% groups=['Canvas']
 namespace canvas {
     /**
+     * Creates a canvas for use in a variable
+     */
+    //% block="create canvas $width by $height"
+    //% blockNamespace=graphics
+    //% group="Canvas"
+    //% width.min=1 width.max=1024 width.defl=40
+    //% height.min=1 height.max=768 height.defl=30
+    //% blockSetVariable=canvas
+    //% weight=52
+    export function createCanvas(width: number, height: number): Canvas {
+        return new Canvas(width, height);
+    }
+    
+    /**
      * Canvas width
      */
     //% block="canvas width"
