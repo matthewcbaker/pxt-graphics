@@ -65,4 +65,9 @@ namespace graphics {
     export function processingTime() {
         return processingTimer.milliseconds
     }
+
+    export function forceReset(): void {
+        canvas.forceReset()
+        display.forceReset()
+    }
 }

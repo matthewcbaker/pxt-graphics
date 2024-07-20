@@ -201,6 +201,16 @@ function testChangeContent() {
 }
 testChangeContent()
 
+function testInitialChangesWithRegularSpriteWindowLater() {
+    Assert.setCurrent("testInitialChangesWithRegularSpriteWindowLater")
+    let canvas = graphics.createCanvas(40, 30)
+    let sprite = canvas.createSprite()
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    let window = display.createWindow(canvas)
+    Assert.assertNumber("change count", window.changes().pixels.length, 16)
+}
+testInitialChangesWithRegularSpriteWindowLater()
+
 function testSpriteSetImageWindowImpactAfterChange() {
     Assert.setCurrent("testSpriteSetImageWindowImpactAfterChange")
     let canvas = graphics.createCanvas(40, 30)
@@ -351,5 +361,118 @@ function testConstrainToCanvasOn() {
     Assert.assertNumber("right pixel 6,2", canvas.pixel(6, 2).brightness, 255)
 }
 testConstrainToCanvasOn()
+
+// ===========================================================================================
+// Default Canvas
+// ===========================================================================================
+
+function testDefaultCanvasInitialCanvas() {
+    Assert.setCurrent("testDefaultCanvasInitialCanvas")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    Assert.assertNumber("width", canvas.width, 160)
+    Assert.assertNumber("height", canvas.height, 128)
+}
+testDefaultCanvasInitialCanvas()
+
+function testDefaultCanvasInitialiseSprite() {
+    Assert.setCurrent("testDefaultCanvasInitialiseSprite")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let sprite = sprites.createSprite(0, 0)
+    Assert.assertNumber("sprite width init", sprite.width, 0)
+    Assert.assertNumber("sprite height init", sprite.height, 0)
+}
+testDefaultCanvasInitialiseSprite()
+
+function testDefaultCanvasSpriteSetImageSize() {
+    Assert.setCurrent("testDefaultCanvasSpriteSetImageSize")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let sprite = sprites.createSprite(0, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("sprite image width", sprite.width, 5)
+    Assert.assertNumber("sprite image height", sprite.height, 5)
+}
+testDefaultCanvasSpriteSetImageSize()
+
+function testDefaultCanvasSpriteAddToCanvasSetImageCanvasImpact() {
+    Assert.setCurrent("testDefaultCanvasSpriteAddToCanvasSetImageCanvasImpact")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let sprite = canvas.createSprite()
+    Assert.assertNumber("canvas blank 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas blank 0,1", canvas.pixel(0, 1).colour.brightness, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    Assert.assertNumber("canvas valid 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas valid 0,1", canvas.pixel(0, 1).colour.brightness, 255)
+}
+testDefaultCanvasSpriteAddToCanvasSetImageCanvasImpact()
+
+function testDefaultCanvasSpriteSetImageCanvasImpact() {
+    Assert.setCurrent("testDefaultCanvasSpriteSetImageCanvasImpact")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let sprite = sprites.createSprite(0, 0)
+    Assert.assertNumber("canvas blank 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas blank 0,1", canvas.pixel(0, 1).colour.brightness, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("sprite valid 0,0", sprite.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("sprite valid 0,1", sprite.pixel(0, 1).colour.brightness, 255)
+    Assert.assertNumber("canvas valid 0,0", canvas.pixel(0, 0).colour.brightness, 0)
+    Assert.assertNumber("canvas valid 0,1", canvas.pixel(0, 1).colour.brightness, 255)
+}
+testDefaultCanvasSpriteSetImageCanvasImpact()
+
+// ===========================================================================================
+// Latest tests
+// ===========================================================================================
+
+function testDefaultCanvasInitialChangesWithRegularSprite() {
+    Assert.setCurrent("testDefaultCanvasInitialChangesWithRegularSprite")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let window = Window.window()
+    let sprite = sprites.createSprite(0, 0)
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    Assert.assertNumber("change count", window.changes().pixels.length, 16)
+}
+testDefaultCanvasInitialChangesWithRegularSprite()
+
+function testDefaultCanvasInitialChangesOnWindowChange() {
+    Assert.setCurrent("testDefaultCanvasInitialChangesOnWindowChange")
+    graphics.forceReset()
+    let canvas = Canvas.canvas()
+    let window = Window.window()
+    let sprite = sprites.createSprite(0, 0)
+    let changecount = 0
+    display.onWindowChange(function (change: Change) {
+        changecount = change.pixels.length
+    })
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    basic.pause(1)
+    Assert.assertNumber("change count", changecount, 16)
+}
+testDefaultCanvasInitialChangesOnWindowChange()
+
+// ===========================================================================================
+// Check minimum
+// ===========================================================================================
+
+function testMinimumCanvasInitialChangesOnWindowChange() {
+    Assert.setCurrent("testMinimumCanvasInitialChangesOnWindowChange")
+    graphics.forceReset()
+    let sprite = sprites.createSprite(0, 0)
+    let changecount = 0
+    display.onWindowChange(function (change: Change) {
+        changecount = change.pixels.length
+    })
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    basic.pause(1)
+    Assert.assertNumber("change count", changecount, 16)
+}
+testMinimumCanvasInitialChangesOnWindowChange()
 
 Assert.result()

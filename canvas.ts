@@ -47,6 +47,10 @@ class Canvas {
         return Canvas.globalCanvas
     }
 
+    static forceReset(): void {
+        Canvas.globalCanvas = undefined
+    }
+
     constructor(width: number, height: number) {
         this._width = Math.constrain(width, 1, 1024)
         this._height = Math.constrain(height, 1, 768)
@@ -118,5 +122,11 @@ class Canvas {
         graphics.processingTimer.stop()
         basic.pause(10)
         graphics.processingTimer.start()
+    }
+}
+
+namespace canvas {
+    export function forceReset(): void {
+        Canvas.forceReset()
     }
 }

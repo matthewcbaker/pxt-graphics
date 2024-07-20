@@ -9,6 +9,11 @@ namespace display {
     let processingTimer: Timer = new Timer()
     let handlerTimer: Timer = new Timer()
 
+    export function forceReset(): void {
+        Window.forceReset()
+        _windows = []
+    }
+
     /**
      * Window width
      */
@@ -107,6 +112,10 @@ class Window {
         if (Window.globalWindow === undefined)
             Window.globalWindow = display.createWindow(Canvas.canvas())
         return Window.globalWindow
+    }
+
+    static forceReset(): void {
+        Window.globalWindow = undefined
     }
 
     constructor(canvas: Canvas) {
