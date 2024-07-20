@@ -12,7 +12,6 @@ namespace windows {
     export function forceReset(): void {
         _windows = []
         Window.forceReset()
-        Window.window()
     }
 
     /**
