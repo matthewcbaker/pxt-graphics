@@ -9,20 +9,6 @@ namespace graphics {
     export let processingTimer: Timer = new Timer()
 
     /**
-     * Creates a canvas for use in a variable
-     */
-    //% block="create canvas $width by $height"
-    //% group="Canvas"
-    //% width.min=1 width.max=1024 width.defl=40
-    //% height.min=1 height.max=768 height.defl=30
-    //% blockSetVariable=canvas
-    //% weight=52
-    //% deprecated=true
-    export function createCanvas(width: number, height: number): Canvas {
-        return new Canvas(width, height);
-    }
-
-    /**
      * Find out how much time has been spent processing graphics activity
      */
     //% block="graphics processing time (ms)"

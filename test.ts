@@ -37,7 +37,7 @@ class Assert {
 
 function testInitialCanvas() {
     Assert.setCurrent("testInitialCanvas")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     Assert.assertNumber("width", canvas.width, 40)
     Assert.assertNumber("height", canvas.height, 30)
 }
@@ -45,7 +45,7 @@ testInitialCanvas()
 
 function testInitialiseSprite() {
     Assert.setCurrent("testInitialiseSprite")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     Assert.assertNumber("sprite width init", sprite.width, 0)
     Assert.assertNumber("sprite height init", sprite.height, 0)
@@ -54,7 +54,7 @@ testInitialiseSprite()
 
 function testSpriteSetImageSize() {
     Assert.setCurrent("testSpriteSetImageSize")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite image width", sprite.width, 5)
@@ -64,7 +64,7 @@ testSpriteSetImageSize()
 
 function testSpriteSetImagePixels() {
     Assert.setCurrent("testSpriteSetImagePixels")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite pixel 0,0", sprite.pixel(0, 0).colour.brightness, 0)
@@ -81,7 +81,7 @@ testSpriteSetImagePixels()
 
 function testSpriteSetImageNoColour() {
     Assert.setCurrent("testSpriteSetImageNoColour")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
@@ -95,7 +95,7 @@ testSpriteSetImageNoColour()
 
 function testSpriteSetImageWithColour() {
     Assert.setCurrent("testSpriteSetImageWithColour")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart), sprites.createColourRGB(200, 100, 50))
     Assert.assertNumber("sprite pixel 0,0,r", sprite.pixel(0, 0).colour.red, 0)
@@ -109,7 +109,7 @@ testSpriteSetImageWithColour()
 
 function testSpriteSetImageCanvasImpact() {
     Assert.setCurrent("testSpriteSetImageCanvasImpact")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     Assert.assertNumber("canvas blank 0,0", canvas.pixel(0, 0).colour.brightness, 0)
     Assert.assertNumber("canvas blank 0,1", canvas.pixel(0, 1).colour.brightness, 0)
@@ -123,7 +123,7 @@ testSpriteSetImageCanvasImpact()
 
 function testInitialWindowFullCanvas() {
     Assert.setCurrent("testInitialWindowFullCanvas")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     Assert.assertNumber("width", window.width, 40)
     Assert.assertNumber("height", window.height, 30)
@@ -132,7 +132,7 @@ testInitialWindowFullCanvas()
 
 function testSpriteSetImageNoWindowImpact() {
     Assert.setCurrent("testSpriteSetImageNoWindowImpact")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
@@ -147,7 +147,7 @@ testSpriteSetImageNoWindowImpact()
 
 function testInitialChangesWhenBlank() {
     Assert.setCurrent("testInitialChangesWhenBlank")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     Assert.assertNumber("no changes", window.changes().pixels.length, 0)
 }
@@ -155,7 +155,7 @@ testInitialChangesWhenBlank()
 
 function testInitialChangesWhenBlankSprite() {
     Assert.setCurrent("testInitialChangesWhenBlankSprite")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("no changes", window.changes().pixels.length, 0)
@@ -164,7 +164,7 @@ testInitialChangesWhenBlankSprite()
 
 function testInitialChangesWithRegularSprite() {
     Assert.setCurrent("testInitialChangesWithRegularSprite")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
@@ -174,7 +174,7 @@ testInitialChangesWithRegularSprite()
 
 function testSubsequentChangesWithRegularSprite() {
     Assert.setCurrent("testSubsequentChangesWithRegularSprite")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
@@ -189,7 +189,7 @@ testSubsequentChangesWithRegularSprite()
 
 function testChangeContent() {
     Assert.setCurrent("testChangeContent")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
@@ -204,7 +204,7 @@ testChangeContent()
 
 function testInitialChangesWithRegularSpriteWindowLater() {
     Assert.setCurrent("testInitialChangesWithRegularSpriteWindowLater")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     let window = windows.createWindow(canvas)
@@ -214,7 +214,7 @@ testInitialChangesWithRegularSpriteWindowLater()
 
 function testSpriteSetImageWindowImpactAfterChange() {
     Assert.setCurrent("testSpriteSetImageWindowImpactAfterChange")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     Assert.assertNumber("window blank 0,0", window.pixel(0, 0).colour.brightness, 0)
@@ -230,7 +230,7 @@ testSpriteSetImageWindowImpactAfterChange()
 
 function testSpriteMoveX() {
     Assert.setCurrent("testSpriteMoveX")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("canvas initial 0,0", canvas.pixel(0, 0).colour.brightness, 0)
@@ -269,7 +269,7 @@ testSpriteMoveX()
 
 function testSpriteMoveWindow() {
     Assert.setCurrent("testSpriteMoveWindow")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
@@ -287,7 +287,7 @@ testSpriteMoveWindow()
 
 function testSpriteMoveChanges() {
     Assert.setCurrent("testSpriteMoveChanges")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     sprite.setImage(images.iconImage(IconNames.Heart))
@@ -305,7 +305,7 @@ testSpriteMoveChanges()
 
 function testInitialChangesOnWindowChange() {
     Assert.setCurrent("testInitialChangesOnWindowChange")
-    let canvas = graphics.createCanvas(40, 30)
+    let canvas = canvases.createCanvas(40, 30)
     let window = windows.createWindow(canvas)
     let sprite = canvas.createSprite()
     let changecount = 0
@@ -320,7 +320,7 @@ testInitialChangesOnWindowChange()
 
 function testConstrainToCanvasOff() {
     Assert.setCurrent("testConstrainToCanvasOff")
-    let canvas = graphics.createCanvas(7, 7)
+    let canvas = canvases.createCanvas(7, 7)
     let sprite = canvas.createSprite(1, 0)
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("initial pixel 0,2", canvas.pixel(0, 2).brightness, 0)
@@ -342,7 +342,7 @@ testConstrainToCanvasOff()
 
 function testConstrainToCanvasOn() {
     Assert.setCurrent("testConstrainToCanvasOn")
-    let canvas = graphics.createCanvas(7, 7)
+    let canvas = canvases.createCanvas(7, 7)
     let sprite = canvas.createSprite(1, 0)
     sprite.setImage(images.iconImage(IconNames.Heart))
     Assert.assertNumber("initial pixel 0,2", canvas.pixel(0, 2).brightness, 0)
