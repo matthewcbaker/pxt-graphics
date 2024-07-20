@@ -68,7 +68,7 @@ namespace graphics {
     }
 
     export function forceReset(): void {
-        canvas.forceReset()
+        canvases.forceReset()
         windows.forceReset()
     }
 }

@@ -13,9 +13,9 @@
         "main.blocks",
         "main.ts",
         "sprites.ts",
-        "canvas.ts",
         "graphics.ts",
-        "windows.ts"
+        "windows.ts",
+        "canvases.ts"
     ],
     "testFiles": [
         "test.ts"
