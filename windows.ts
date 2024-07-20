@@ -4,12 +4,15 @@
 //% weight=8 color="#de26a7" icon="\uf108"
 //% groups=['Window', 'Changes', 'Pixels', 'Performance']
 namespace windows {
-
+    
     let _windows: Window[] = []
+    let handlers: ((change: Change) => void)[] = undefined
     let processingTimer: Timer = new Timer()
     let handlerTimer: Timer = new Timer()
 
     export function forceReset(): void {
+        if (handlers !== undefined)
+            handlers = []
         _windows = []
         Window.forceReset()
     }
@@ -49,6 +52,22 @@ namespace windows {
         return Window.window().height
     }
 
+    function canvasUpdatedHandler(): void {
+        if (handlers === undefined || handlers.length == 0)
+            return
+        for (let i = 0; i < _windows.length; i++) {
+            processingTimer.start()
+            let changes = _windows[i].changes();
+            processingTimer.stop()
+            if (changes.pixels.length > 0) {
+                handlerTimer.start()
+                for (let h = 0; h < handlers.length; h++)
+                    handlers[h](changes);
+                handlerTimer.stop()
+            }
+        }
+    }
+
     /**
      * Called whenever there are changes available
      */
@@ -57,18 +76,11 @@ namespace windows {
     //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
-        control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, function () {
-            for (let i = 0; i < _windows.length; i++) {
-                processingTimer.start()
-                let changes = _windows[i].changes();
-                processingTimer.stop()
-                if (changes.pixels.length > 0) {
-                    handlerTimer.start()
-                    handler(changes);
-                    handlerTimer.stop()
-                }
-            }
-        })
+        if (handlers === undefined) {
+            handlers = []
+            control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, canvasUpdatedHandler)
+        }
+        handlers.push(handler)
     }
 
     /**
