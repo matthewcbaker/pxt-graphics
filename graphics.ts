@@ -72,3 +72,5 @@ namespace graphics {
         windows.forceReset()
     }
 }
+
+graphics.forceReset()

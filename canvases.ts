@@ -67,6 +67,7 @@ class Canvas {
 
     static forceReset(): void {
         Canvas.globalCanvas = undefined
+        let forceGlobalCreation = Canvas.canvas()
     }
 
     constructor(width: number, height: number) {

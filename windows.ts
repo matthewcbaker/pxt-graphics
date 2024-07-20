@@ -10,8 +10,9 @@ namespace windows {
     let handlerTimer: Timer = new Timer()
 
     export function forceReset(): void {
-        Window.forceReset()
         _windows = []
+        Window.forceReset()
+        Window.window()
     }
 
     /**
@@ -116,6 +117,7 @@ class Window {
 
     static forceReset(): void {
         Window.globalWindow = undefined
+        let forceGlobalCreation = Window.window()
     }
 
     constructor(canvas: Canvas) {
