@@ -57,7 +57,7 @@ namespace windows {
             return
         for (let i = 0; i < _windows.length; i++) {
             processingTimer.start()
-            let changes = _windows[i].changes();
+            let changes = _windows[i]._changes();
             processingTimer.stop()
             if (changes.pixels.length > 0) {
                 handlerTimer.start()
@@ -164,17 +164,7 @@ class Window {
         return this._pixels[x][y]
     }
 
-    /**
-     * Gets the differences between the last change request and this one.
-     */
-    //% block="$this changes"
-    //% this.defl=window
-    //% this.shadow=variables_get
-    //% blockSetVariable=change
-    //% group="Changes"
-    //% weight=51
-    //% deprecated=true
-    public changes(): Change {
+    public _changes(): Change {
         if (this._changelist.length == 0)
             return this._no_change
         let changes = this._changelist
