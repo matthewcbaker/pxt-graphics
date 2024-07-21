@@ -9,9 +9,10 @@ class Assert {
         
     }
 
-    static setCurrent(current: string) {
+    static setCurrent(current: string, forceReset = true) {
         Assert._current = current
-        graphics.forceReset()
+        if (forceReset)
+            graphics.forceReset()
     }
 
     static assertTrue(name: string, actual: boolean) {
@@ -34,6 +35,19 @@ class Assert {
         }
     }
 }
+
+function testMinimumCanvasInitialChangesOnWindowChangeAsFirstTest() {
+    Assert.setCurrent("testMinimumCanvasInitialChangesOnWindowChangeAsFirstTest", false)
+    let sprite = sprites.createSprite(0, 0)
+    let changecount = 0
+    windows.onWindowChange(function (change: Change) {
+        changecount = change.pixels.length
+    })
+    sprite.setImage(images.iconImage(IconNames.Heart))
+    basic.pause(1)
+    Assert.assertNumber("change count", changecount, 16)
+}
+testMinimumCanvasInitialChangesOnWindowChangeAsFirstTest()
 
 function testInitialCanvas() {
     Assert.setCurrent("testInitialCanvas")

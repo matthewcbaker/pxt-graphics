@@ -76,6 +76,7 @@ namespace windows {
     //% weight=60
     //% draggableParameters="reporter"
     export function onWindowChange(handler: (change: Change) => void) {
+        Window.window() // Default window must be in place before adding handlers
         if (handlers === undefined) {
             handlers = []
             control.onEvent(GraphicsEventBusSource.GRAPHICS_ID_CANVAS, GraphicsEventBusValue.GRAPHICS_CANVAS_EVT_UPDATED, canvasUpdatedHandler)
