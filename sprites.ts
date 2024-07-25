@@ -46,7 +46,7 @@ class Sprite {
     private constraint: { [key: string]: number } = undefined
     _pixel_list: { x: number, y: number }[] = []
     _pixel_list_with_offsets: { x: number, y: number }[] = []
-    _background_pixel: Pixel = new Pixel(Colour.create(0, 0, 0))
+    _background_pixel: Pixel = new Pixel(Colour.transparent())
     private canvas: Canvas = null
 
     constructor(canvas: Canvas, x: number, y: number) {
@@ -267,9 +267,11 @@ namespace sprites {
 
 class Colour {
     private static cache: { [key: number]: { [key: number]: { [key: number]: Colour } } } = {}
+    private static transparentColour = new Colour(0, 0, 0, true)
     _r: number
     _g: number
     _b: number
+    _transparent: boolean = false
 
     static create(r: number, g: number, b: number): Colour {
         if (Colour.cache[r] == undefined)
@@ -281,7 +283,11 @@ class Colour {
         return Colour.cache[r][g][b]
     }
 
-    constructor(r: number, g: number, b: number) {
+    static transparent(): Colour {
+        return Colour.transparentColour
+    }
+
+    constructor(r: number, g: number, b: number, transparent?: boolean) {
         this._r = this._constrain(r)
         this._g = this._constrain(g)
         this._b = this._constrain(b)
@@ -295,7 +301,9 @@ class Colour {
 
     get brightness() { return Math.max(this.red, Math.max(this.green, this.blue)) }
 
+    get transparent() { return this._transparent }
+
     _constrain(value: number) {
-        return Math.constrain(value, 0, 255)
+        return Math.constrain(Math.floor(value), 0, 255)
     }
 }

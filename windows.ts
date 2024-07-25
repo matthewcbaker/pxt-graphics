@@ -307,5 +307,9 @@ class Pixel {
     //% group="Pixels"
     get brightness() { return this._colour.brightness }
 
+    //% blockCombine
+    //% group="Pixels"
+    get transparent() { return this._colour.transparent }
+
     get colour() { return this._colour }
 }

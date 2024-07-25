@@ -118,7 +118,9 @@ class Canvas {
             let sprite = this._sprites[i]
             if (x >= sprite.x && x < sprite.x + sprite.width &&
                 y >= sprite.y && y < sprite.y + sprite.height) {
-                return this._sprites[i].pixel(x - sprite.x, y - sprite.y)
+                let current = this._sprites[i].pixel(x - sprite.x, y - sprite.y)
+                if (!current.transparent)
+                    return current
             }
         }
         return this._background_pixel
